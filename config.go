@@ -15,6 +15,8 @@ type config struct {
 
 	CookieSigningKey string `flag:"cookie-authkey" description:"Key used to authenticate the session"`
 	CookieEncryptKey string `flag:"cookie-encryptkey" description:"Key used to encrypt the session"`
+
+	VersionAndQuit bool `flag:"version" default:"false" description:"Show version and quit"`
 }
 
 func (c config) ParsedStorage() (*url.URL, error) {

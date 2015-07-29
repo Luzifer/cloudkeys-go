@@ -19,7 +19,7 @@ func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Se
 
 	if !storage.IsPresent(createUserFilename(username)) {
 		(*ctx)["error"] = true
-		return String("login.html"), nil
+		return stringPointer("login.html"), nil
 	}
 
 	userFileRaw, err := storage.Read(createUserFilename(username))
@@ -34,7 +34,7 @@ func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Se
 
 	if userFile.MetaData.Password != password {
 		(*ctx)["error"] = true
-		return String("login.html"), nil
+		return stringPointer("login.html"), nil
 	}
 
 	auth, ok := session.Values["authorizedAccounts"].(authorizedAccounts)

@@ -18,12 +18,12 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	)
 
 	if username == "" || password == "" || password != passwordCheck {
-		return String("register.html"), nil
+		return stringPointer("register.html"), nil
 	}
 
 	if storage.IsPresent(createUserFilename(username)) {
 		(*ctx)["exists"] = true
-		return String("register.html"), nil
+		return stringPointer("register.html"), nil
 	}
 
 	d := dataObject{}
@@ -35,7 +35,7 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	if err := storage.Write(createUserFilename(username), data); err == nil {
 		(*ctx)["created"] = true
-		return String("register.html"), nil
+		return stringPointer("register.html"), nil
 	}
 
 	return nil, err // TODO: Handle in-app?

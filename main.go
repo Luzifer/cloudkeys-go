@@ -22,6 +22,11 @@ var (
 )
 
 func init() {
+	if cfg.VersionAndQuit {
+		fmt.Printf("cloudkeys-go %s\n", version)
+		os.Exit(0)
+	}
+
 	if _, err := cfg.ParsedStorage(); err != nil {
 		fmt.Printf("ERR: Please provide a valid storage URI\n")
 		os.Exit(1)

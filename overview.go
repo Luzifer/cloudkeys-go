@@ -30,5 +30,5 @@ func overviewHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	(*ctx)["authorized_accounts"] = frontendAccounts
 	(*ctx)["current_user_index"] = idx
 
-	return String("overview.html"), nil
+	return stringPointer("overview.html"), nil
 }

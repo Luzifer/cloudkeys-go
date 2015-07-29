@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	registerStorage("s3", NewS3Storage)
+	registerStorage("s3", newS3Storage)
 }
 
 // S3Storage implements a storage option for Amazon S3
@@ -25,7 +25,7 @@ type S3Storage struct {
 }
 
 // NewS3Storage checks config, creates the path and initializes a S3Storage
-func NewS3Storage(u *url.URL) (storageAdapter, error) {
+func newS3Storage(u *url.URL) (storageAdapter, error) {
 	return &S3Storage{
 		bucket: u.Host,
 		path:   u.Path,

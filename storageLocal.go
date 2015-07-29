@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	registerStorage("local", NewLocalStorage)
+	registerStorage("local", newLocalStorage)
 }
 
 // LocalStorage implements a storage option for local file storage
@@ -20,7 +20,7 @@ type LocalStorage struct {
 }
 
 // NewLocalStorage checks config, creates the path and initializes a LocalStorage
-func NewLocalStorage(u *url.URL) (storageAdapter, error) {
+func newLocalStorage(u *url.URL) (storageAdapter, error) {
 	p := u.Path[1:]
 
 	if len(p) == 0 {

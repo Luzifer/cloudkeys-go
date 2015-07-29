@@ -21,7 +21,7 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 
 		template, err := f(res, r, sess, &ctx)
 		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
+			http.Error(res, "An error ocurred.", http.StatusInternalServerError)
 			fmt.Printf("ERR: %s\n", err)
 			return
 		}
@@ -61,6 +61,6 @@ func simpleTemplateOutput(template string) httpHelperFunc {
 	}
 }
 
-func String(s string) *string {
+func stringPointer(s string) *string {
 	return &s
 }
