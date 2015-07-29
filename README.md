@@ -31,7 +31,8 @@ What you definitely should set when starting the server:
 This storage engine is used in the default config when you just start up the server as you can see in the output above. You don't have many options to set for this one. The only thing is the path where all the data is stored.
 
 ```
-local:///<your data directory>
+Schema:  local:///<your data directory>
+Example: local:///./data
 ```
 
 The directory can be set absolute or relative. Please ensure there are **3** slashes between `local:` and the begin of your path. (So if you're setting an absolute path you will set 4 slashes in a row.)
@@ -41,7 +42,8 @@ The directory can be set absolute or relative. Please ensure there are **3** sla
 This is the storage engine you want to use if you're migrating from the old CloudKeys version. This option is fully compatible to every piece of data the old version stored.
 
 ```
-s3://<bucket><path>
+Schema:  s3://<bucket><path>
+Example: s3://mybucket/
 ```
 
 You can specify the bucket and also a prefix for the storage. That way you even could use one bucket for different instances of CloudKeys Go. In case you're migrating from the old version you need to set the path to `/`.
