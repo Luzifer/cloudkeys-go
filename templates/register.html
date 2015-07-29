@@ -18,6 +18,14 @@
   </div>
 </div>
 {% endif %}
+{% if error %}
+<div class="row">
+  <div class="col-md-4 col-md-push-4 alert alert-danger fade in">
+    <h4>Ooops&hellip;</h4>
+    <p>Something went wrong. Please try again.</p>
+  </div>
+</div>
+{% endif %}
 <form class="form-signin" method="post">
   <h2 class="form-signin-heading">Please register</h2>
   <input type="text" name="username" class="form-control" placeholder="Username">

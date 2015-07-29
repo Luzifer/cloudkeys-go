@@ -28,15 +28,14 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	d := dataObject{}
 	d.MetaData.Password = hashedPassword
-	data, err := d.GetData()
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	data, _ := d.GetData()
 
-	if err := storage.Write(createUserFilename(username), data); err == nil {
-		(*ctx)["created"] = true
+	if err := storage.Write(createUserFilename(username), data); err != nil {
+		fmt.Printf("ERR: Unable to write user file: %s\n", err)
+		(*ctx)["error"] = true
 		return stringPointer("register.html"), nil
 	}
 
-	return nil, err // TODO: Handle in-app?
+	(*ctx)["created"] = true
+	return stringPointer("register.html"), nil
 }

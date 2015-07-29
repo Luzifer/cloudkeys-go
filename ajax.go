@@ -24,10 +24,7 @@ func (a ajaxResponse) Bytes() []byte {
 
 func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	res.Header().Set("Content-Type", "application/json")
-	user, err := checkLogin(r, session)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	user, _ := checkLogin(r, session)
 
 	if user == nil || !storage.IsPresent(user.UserFile) {
 		res.Write(ajaxResponse{Error: true}.Bytes())
@@ -36,13 +33,12 @@ func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.
 
 	userFileRaw, err := storage.Read(user.UserFile)
 	if err != nil {
-		return nil, err // TODO: Handle in-app?
+		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		res.Write(ajaxResponse{Error: true}.Bytes())
+		return nil, nil
 	}
 
-	userFile, err := readDataObject(userFileRaw)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	userFile, _ := readDataObject(userFileRaw)
 
 	res.Write(ajaxResponse{Version: userFile.MetaData.Version, Data: userFile.Data}.Bytes())
 	return nil, nil
@@ -50,10 +46,7 @@ func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.
 
 func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	res.Header().Set("Content-Type", "application/json")
-	user, err := checkLogin(r, session)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	user, _ := checkLogin(r, session)
 
 	if user == nil {
 		res.Write(ajaxResponse{Error: true, Type: "login"}.Bytes())
@@ -67,13 +60,12 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	userFileRaw, err := storage.Read(user.UserFile)
 	if err != nil {
-		return nil, err // TODO: Handle in-app?
+		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
+		return nil, nil
 	}
 
-	userFile, err := readDataObject(userFileRaw)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	userFile, _ := readDataObject(userFileRaw)
 
 	var (
 		version  = r.FormValue("version")
@@ -92,19 +84,20 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	}
 
 	if err := storage.Backup(user.UserFile); err != nil {
-		return nil, err // TODO: Handle in-app?
+		fmt.Printf("ERR: Unable to backup user file: %s\n", err)
+		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
+		return nil, nil
 	}
 
 	userFile.MetaData.Version = checksum
 	userFile.Data = data
 
-	d, err := userFile.GetData()
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	d, _ := userFile.GetData()
 
 	if err := storage.Write(user.UserFile, d); err != nil {
-		return nil, err // TODO: Handle in-app?
+		fmt.Printf("ERR: Unable to write user file: %s\n", err)
+		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
+		return nil, nil
 	}
 
 	res.Write(ajaxResponse{Version: userFile.MetaData.Version, Data: userFile.Data}.Bytes())

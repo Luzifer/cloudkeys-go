@@ -8,10 +8,7 @@ import (
 )
 
 func overviewHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
-	user, err := checkLogin(r, session)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	user, _ := checkLogin(r, session)
 
 	if user == nil || !storage.IsPresent(user.UserFile) {
 		http.Redirect(res, r, "../../login", http.StatusFound)

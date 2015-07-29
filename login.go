@@ -24,13 +24,12 @@ func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Se
 
 	userFileRaw, err := storage.Read(createUserFilename(username))
 	if err != nil {
-		return nil, err // TODO: Handle in-app?
+		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		(*ctx)["error"] = true
+		return stringPointer("login.html"), nil
 	}
 
-	userFile, err := readDataObject(userFileRaw)
-	if err != nil {
-		return nil, err // TODO: Handle in-app?
-	}
+	userFile, _ := readDataObject(userFileRaw)
 
 	if userFile.MetaData.Password != password {
 		(*ctx)["error"] = true
@@ -74,7 +73,7 @@ func checkLogin(r *http.Request, session *sessions.Session) (*authorizedAccount,
 	vars := mux.Vars(r)
 	idx, err := strconv.ParseInt(vars["userIndex"], 10, 64)
 	if err != nil {
-		return nil, err // TODO: Handle in-app?
+		return nil, err
 	}
 
 	auth, ok := session.Values["authorizedAccounts"].(authorizedAccounts)
