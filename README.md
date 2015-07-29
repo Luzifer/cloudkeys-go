@@ -48,6 +48,8 @@ Example: s3://mybucket/
 
 You can specify the bucket and also a prefix for the storage. That way you even could use one bucket for different instances of CloudKeys Go. In case you're migrating from the old version you need to set the path to `/`.
 
+For this to work you also need to set three environment variables: `AWS_ACCESS_KEY`, `AWS_SECRET_ACCESS_KEY` and `AWS_REGION`. When its about `AWS_REGION` pay attention to select the right region for your bucket.
+
 ### Redis
 
 If you want to utilize a Redis storage server or even a Redis cluster you can choose this storage type. Authentication is supported as well as selecting the database to use. Aditionally you can set a prefix for the keys.
