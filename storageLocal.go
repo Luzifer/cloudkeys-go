@@ -42,6 +42,7 @@ func (l *LocalStorage) Write(identifier string, data io.Reader) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
 	_, err = io.Copy(f, data)
 	return err
