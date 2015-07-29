@@ -1,0 +1,33 @@
+{% extends "outer.html" %}
+{% block title %}Registration{% endblock %}
+{% block pagetype %}register{% endblock %}
+{% block content %}
+{% if created %}
+<div class="row">
+  <div class="col-md-4 col-md-push-4 alert alert-success fade in">
+    <h4>Woohoo!</h4>
+    <p>Your account has been created. Go to the <a href="login">Login page</a> to login.</p>
+  </div>
+</div>
+{% endif %}
+{% if exists %}
+<div class="row">
+  <div class="col-md-4 col-md-push-4 alert alert-danger fade in">
+    <h4>Sorry!</h4>
+    <p>Your username already exists</p>
+  </div>
+</div>
+{% endif %}
+<form class="form-signin" method="post">
+  <h2 class="form-signin-heading">Please register</h2>
+  <input type="text" name="username" class="form-control" placeholder="Username">
+  <input type="password" name="password" class="form-control" placeholder="Password">
+  <input type="password" name="password_repeat" class="form-control" placeholder="Repeat Password">
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+</form>
+<div class="row">
+  <div class="col-md-4 col-md-push-4">
+    This login is to protect your password storage. This username and password are only for login reasons, but your passwords will not be encrypted with <strong>this</strong> password. You can set your encryption password after your first login.
+  </div>
+</div>
+{% endblock %}
