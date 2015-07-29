@@ -47,3 +47,12 @@ Example: s3://mybucket/
 ```
 
 You can specify the bucket and also a prefix for the storage. That way you even could use one bucket for different instances of CloudKeys Go. In case you're migrating from the old version you need to set the path to `/`.
+
+### Redis
+
+If you want to utilize a Redis storage server or even a Redis cluster you can choose this storage type. Authentication is supported as well as selecting the database to use. Aditionally you can set a prefix for the keys.
+
+```
+Schema:  redis+tcp://auth:<password>@127.0.0.1:6379/<db>?timeout=10s&maxidle=1&prefix=<prefix>
+Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
+```
