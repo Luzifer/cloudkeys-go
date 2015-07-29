@@ -1,6 +1,4 @@
-#VERSION = $(shell git describe --tags)
-VERSION = dev
-BOOTSTRAP_VERISON = 3.3.5
+VERSION = $(shell git describe --tags)
 
 default: build
 
