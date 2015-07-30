@@ -101,3 +101,5 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 ```
 # git push heroku master
 ```
+
+3. Set your configuration variables in the Heroku apps dashboard (see env variables in usage section above)
