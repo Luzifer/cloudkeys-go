@@ -88,6 +88,12 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 # cctrlapp APP_NAME/default deploy
 ```
 
+3. Set your configuration variables  (see env variables in usage section above)
+
+```
+# cctrlapp app_name/dep_name config.add PARAM1=VALUE1 PARAM2=VALUE2 [...]
+```
+
 ### Install on Heroku
 
 1. Create a new Heroku app
