@@ -24,6 +24,19 @@ What you definitely should set when starting the server:
 - `password-salt` - The login password of your users are stored in the database for comparison when they log in. Though the passwords are hashed this salt gives you more confidence nobody can use a hash table to simply decrypt the passwords.
 - `username-salt` - The usernames are the keys in the database. Like the passwords they are also hashed but you can put an additional salt to them to make it way harder to break them. You should use another salt than for the passwords.
 
+If you don't want to define the secrets using command line flags you also can use environment variables to set those flags:
+
+```
+FLAG                ENV-Variable
+
+password-salt       passwordSalt
+username-salt       usernameSalt
+storage             storage
+listen              listen
+cookie-authkey      authkey
+cookie-encryptkey   encryptkey
+```
+
 ## Supported storage engines
 
 ### Local file storage (default)
