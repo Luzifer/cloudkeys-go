@@ -1,4 +1,10 @@
 
+1.2.2 / 2015-08-01
+==================
+
+  * Fix: On register the username needs to be treated like in login
+  * Fixed numbering in README
+
 1.2.1 / 2015-07-31
 ==================
 
