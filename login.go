@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/mux"
@@ -13,7 +14,7 @@ import (
 
 func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	var (
-		username = r.FormValue("username")
+		username = strings.ToLower(r.FormValue("username"))
 		password = fmt.Sprintf("%x", sha1.Sum([]byte(cfg.PasswordSalt+r.FormValue("password"))))
 	)
 
