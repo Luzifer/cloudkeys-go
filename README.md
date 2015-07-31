@@ -77,35 +77,35 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 
 1. Create a new CloudControl app
 
-```
-# cctrlapp APP_NAME create custom --buildpack https://github.com/heroku/heroku-buildpack-go
-```
+    ```
+    # cctrlapp APP_NAME create custom --buildpack https://github.com/heroku/heroku-buildpack-go
+    ```
 
 2. Push the code to your app and deploy it
 
-```
-# cctrlapp APP_NAME/default push
-# cctrlapp APP_NAME/default deploy
-```
+    ```
+    # cctrlapp APP_NAME/default push
+    # cctrlapp APP_NAME/default deploy
+    ```
 
 3. Set your configuration variables  (see env variables in usage section above)
 
-```
-# cctrlapp app_name/dep_name config.add PARAM1=VALUE1 PARAM2=VALUE2 [...]
-```
+    ```
+    # cctrlapp app_name/dep_name config.add PARAM1=VALUE1 PARAM2=VALUE2 [...]
+    ```
 
 ### Install on Heroku
 
 1. Create a new Heroku app
 
-```
-# heroku create -b https://github.com/heroku/heroku-buildpack-go
-```
+    ```
+    # heroku create -b https://github.com/heroku/heroku-buildpack-go
+    ```
 
 2. Push the code to your app
 
-```
-# git push heroku master
-```
+    ```
+    # git push heroku master
+    ```
 
 3. Set your configuration variables in the Heroku apps dashboard (see env variables in usage section above)
