@@ -1,4 +1,4 @@
-package main // import "github.com/Luzifer/cloudkeys-go"
+package main // import "github.com/mthie/cloudkeys-go"
 
 import (
 	"crypto/sha1"
