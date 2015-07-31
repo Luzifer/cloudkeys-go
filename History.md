@@ -1,4 +1,9 @@
 
+1.2.1 / 2015-07-31
+==================
+
+  * Fix: Restored old behavior of making all usernames lowercase
+
 1.2.0 / 2015-07-30
 ==================
 
