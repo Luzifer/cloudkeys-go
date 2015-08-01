@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/sessions"
@@ -11,7 +12,7 @@ import (
 
 func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	var (
-		username       = r.FormValue("username")
+		username       = strings.ToLower(r.FormValue("username"))
 		password       = r.FormValue("password")
 		passwordCheck  = r.FormValue("password_repeat")
 		hashedPassword = fmt.Sprintf("%x", sha1.Sum([]byte(cfg.PasswordSalt+password)))
