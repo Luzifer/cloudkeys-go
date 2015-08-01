@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func bindata_read(data []byte, name string) ([]byte, error) {
+func bindataRead(data []byte, name string) ([]byte, error) {
 	gz, err := gzip.NewReader(bytes.NewBuffer(data))
 	if err != nil {
 		return nil, fmt.Errorf("Read %q: %v", name, err)
@@ -25,8 +25,8 @@ func bindata_read(data []byte, name string) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func assets_ajax_loader_gif() ([]byte, error) {
-	return bindata_read([]byte{
+func assetsAjaxLoaderGif() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0x9c, 0x99,
 		0x67, 0x54, 0x13, 0xeb, 0xfe, 0xef, 0x27, 0x33, 0x93, 0x5e, 0x48, 0x02,
 		0x62, 0x44, 0xc0, 0x00, 0x01, 0xa3, 0x02, 0x46, 0x9a, 0x11, 0x01, 0x13,
@@ -656,8 +656,8 @@ func assets_ajax_loader_gif() ([]byte, error) {
 	)
 }
 
-func assets_clippy_swf() ([]byte, error) {
-	return bindata_read([]byte{
+func assetsClippySwf() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0x00, 0x44,
 		0x15, 0xbb, 0xea, 0x43, 0x57, 0x53, 0x09, 0xbf, 0x1c, 0x00, 0x00, 0x78,
 		0xda, 0x95, 0x58, 0x79, 0x5c, 0x53, 0x57, 0xf6, 0x7f, 0xf7, 0xe5, 0x25,
@@ -1119,8 +1119,8 @@ func assets_clippy_swf() ([]byte, error) {
 	)
 }
 
-func assets_script_js() ([]byte, error) {
-	return bindata_read([]byte{
+func assetsScriptJs() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0xe4, 0x3b,
 		0x6b, 0x73, 0xdb, 0xb6, 0xb2, 0xdf, 0xf3, 0x2b, 0x50, 0x26, 0xb7, 0xa2,
 		0xae, 0x65, 0x2a, 0xca, 0xab, 0x4d, 0xfc, 0xe8, 0x64, 0xdc, 0xf6, 0xde,
@@ -1409,8 +1409,8 @@ func assets_script_js() ([]byte, error) {
 	)
 }
 
-func assets_signin_css() ([]byte, error) {
-	return bindata_read([]byte{
+func assetsSigninCSS() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0xac, 0x52,
 		0xd1, 0x6e, 0xa3, 0x30, 0x10, 0x7c, 0xe7, 0x2b, 0xac, 0xdc, 0xeb, 0x39,
 		0x4a, 0x2e, 0x77, 0xf7, 0xe0, 0xe8, 0xbe, 0xe4, 0x54, 0x55, 0x06, 0x16,
@@ -1448,8 +1448,8 @@ func assets_signin_css() ([]byte, error) {
 	)
 }
 
-func assets_style_css() ([]byte, error) {
-	return bindata_read([]byte{
+func assetsStyleCSS() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0xc4, 0x55,
 		0xdd, 0x6e, 0xe3, 0x2c, 0x14, 0x7c, 0x15, 0x24, 0xab, 0x52, 0x2b, 0xd5,
 		0x91, 0xdd, 0x7e, 0x49, 0x5a, 0x7c, 0xf3, 0x49, 0xfb, 0x20, 0x2b, 0x0c,
@@ -1510,8 +1510,8 @@ func assets_style_css() ([]byte, error) {
 	)
 }
 
-func templates_404_html() ([]byte, error) {
-	return bindata_read([]byte{
+func templates404HTML() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0x9c, 0xbc,
 		0x57, 0xb3, 0xf4, 0x4a, 0xb2, 0x1d, 0xf6, 0xce, 0x5f, 0x31, 0xa2, 0x1e,
 		0x5b, 0x37, 0x1a, 0xde, 0x0c, 0x2f, 0x19, 0x01, 0xef, 0xbd, 0xc7, 0x1b,
@@ -4087,8 +4087,8 @@ func templates_404_html() ([]byte, error) {
 	)
 }
 
-func templates_login_html() ([]byte, error) {
-	return bindata_read([]byte{
+func templatesLoginHTML() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0x84, 0x52,
 		0x4d, 0x6f, 0xdb, 0x30, 0x0c, 0xbd, 0xe7, 0x57, 0x10, 0x02, 0x8a, 0x9d,
 		0x9c, 0x00, 0x45, 0x8f, 0x89, 0x8f, 0x3d, 0xed, 0x50, 0xa0, 0xd8, 0x0f,
@@ -4127,8 +4127,8 @@ func templates_login_html() ([]byte, error) {
 	)
 }
 
-func templates_outer_html() ([]byte, error) {
-	return bindata_read([]byte{
+func templatesOuterHTML() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0x8c, 0x54,
 		0xc1, 0x92, 0xd4, 0x20, 0x10, 0xbd, 0xef, 0x57, 0x20, 0xd6, 0xde, 0x4c,
 		0x70, 0x5d, 0xad, 0xf2, 0x90, 0xe4, 0xa2, 0x56, 0x79, 0xd3, 0xb2, 0xbc,
@@ -4177,8 +4177,8 @@ func templates_outer_html() ([]byte, error) {
 	)
 }
 
-func templates_overview_html() ([]byte, error) {
-	return bindata_read([]byte{
+func templatesOverviewHTML() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0xbc, 0x59,
 		0x5f, 0x6f, 0xdb, 0xba, 0x15, 0x7f, 0xdf, 0xa7, 0xe0, 0x54, 0x74, 0x7d,
 		0x89, 0xac, 0x26, 0xed, 0x80, 0xa1, 0xb3, 0x0d, 0x14, 0x69, 0x80, 0x16,
@@ -4321,8 +4321,8 @@ func templates_overview_html() ([]byte, error) {
 	)
 }
 
-func templates_register_html() ([]byte, error) {
-	return bindata_read([]byte{
+func templatesRegisterHTML() ([]byte, error) {
+	return bindataRead([]byte{
 		0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x00, 0xff, 0xac, 0x54,
 		0x4d, 0x6f, 0xdb, 0x30, 0x0c, 0xbd, 0xf7, 0x57, 0x70, 0x06, 0x7a, 0x5b,
 		0x12, 0xa0, 0xe8, 0xd1, 0xf1, 0x75, 0x97, 0x1d, 0x8a, 0x6e, 0xc3, 0xb0,
@@ -4397,17 +4397,18 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() ([]byte, error){
-	"assets/ajax-loader.gif": assets_ajax_loader_gif,
-	"assets/clippy.swf": assets_clippy_swf,
-	"assets/script.js": assets_script_js,
-	"assets/signin.css": assets_signin_css,
-	"assets/style.css": assets_style_css,
-	"templates/404.html": templates_404_html,
-	"templates/login.html": templates_login_html,
-	"templates/outer.html": templates_outer_html,
-	"templates/overview.html": templates_overview_html,
-	"templates/register.html": templates_register_html,
+	"assets/ajax-loader.gif":  assetsAjaxLoaderGif,
+	"assets/clippy.swf":       assetsClippySwf,
+	"assets/script.js":        assetsScriptJs,
+	"assets/signin.css":       assetsSigninCSS,
+	"assets/style.css":        assetsStyleCSS,
+	"templates/404.html":      templates404HTML,
+	"templates/login.html":    templatesLoginHTML,
+	"templates/outer.html":    templatesOuterHTML,
+	"templates/overview.html": templatesOverviewHTML,
+	"templates/register.html": templatesRegisterHTML,
 }
+
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
@@ -4437,39 +4438,30 @@ func AssetDir(name string) ([]string, error) {
 		return nil, fmt.Errorf("Asset %s not found", name)
 	}
 	rv := make([]string, 0, len(node.Children))
-	for name := range node.Children {
-		rv = append(rv, name)
+	for child := range node.Children {
+		rv = append(rv, child)
 	}
 	return rv, nil
 }
 
-type _bintree_t struct {
-	Func func() ([]byte, error)
-	Children map[string]*_bintree_t
+type _bintreeT struct {
+	Func     func() ([]byte, error)
+	Children map[string]*_bintreeT
 }
-var _bintree = &_bintree_t{nil, map[string]*_bintree_t{
-	"assets": &_bintree_t{nil, map[string]*_bintree_t{
-		"ajax-loader.gif": &_bintree_t{assets_ajax_loader_gif, map[string]*_bintree_t{
-		}},
-		"clippy.swf": &_bintree_t{assets_clippy_swf, map[string]*_bintree_t{
-		}},
-		"script.js": &_bintree_t{assets_script_js, map[string]*_bintree_t{
-		}},
-		"signin.css": &_bintree_t{assets_signin_css, map[string]*_bintree_t{
-		}},
-		"style.css": &_bintree_t{assets_style_css, map[string]*_bintree_t{
-		}},
+
+var _bintree = &_bintreeT{nil, map[string]*_bintreeT{
+	"assets": &_bintreeT{nil, map[string]*_bintreeT{
+		"ajax-loader.gif": &_bintreeT{assetsAjaxLoaderGif, map[string]*_bintreeT{}},
+		"clippy.swf":      &_bintreeT{assetsClippySwf, map[string]*_bintreeT{}},
+		"script.js":       &_bintreeT{assetsScriptJs, map[string]*_bintreeT{}},
+		"signin.css":      &_bintreeT{assetsSigninCSS, map[string]*_bintreeT{}},
+		"style.css":       &_bintreeT{assetsStyleCSS, map[string]*_bintreeT{}},
 	}},
-	"templates": &_bintree_t{nil, map[string]*_bintree_t{
-		"login.html": &_bintree_t{templates_login_html, map[string]*_bintree_t{
-		}},
-		"outer.html": &_bintree_t{templates_outer_html, map[string]*_bintree_t{
-		}},
-		"overview.html": &_bintree_t{templates_overview_html, map[string]*_bintree_t{
-		}},
-		"register.html": &_bintree_t{templates_register_html, map[string]*_bintree_t{
-		}},
-		"404.html": &_bintree_t{templates_404_html, map[string]*_bintree_t{
-		}},
+	"templates": &_bintreeT{nil, map[string]*_bintreeT{
+		"login.html":    &_bintreeT{templatesLoginHTML, map[string]*_bintreeT{}},
+		"outer.html":    &_bintreeT{templatesOuterHTML, map[string]*_bintreeT{}},
+		"overview.html": &_bintreeT{templatesOverviewHTML, map[string]*_bintreeT{}},
+		"register.html": &_bintreeT{templatesRegisterHTML, map[string]*_bintreeT{}},
+		"404.html":      &_bintreeT{templates404HTML, map[string]*_bintreeT{}},
 	}},
 }}
