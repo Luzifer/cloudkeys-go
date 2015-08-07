@@ -198,7 +198,7 @@
           password += "*";
         }
         ul.append("<li><label>Username:</label><input type=\"text\" class=\"username\" value=\"" + item.username + "\">" + (this.getClippyCode(item.username)) + "<br></li>");
-        ul.append("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"" + password + "\" data-toggle=\"" + item.password + "\"><em> (toggle visibility)</em></span>" + (this.getClippyCode(item.password)) + "<br></li>");
+        ul.append("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"" + password + "\" data-toggle=\"" + (item.password.replace(/"/g, '&quot;')) + "\"><em> (toggle visibility)</em></span>" + (this.getClippyCode(item.password)) + "<br></li>");
         ul.append("<li><label>URL:</label><input type=\"text\" class=\"url\" value=\"" + item.url + "\">" + (this.getClippyCode(item.url)) + "<br></li>");
         lines_match = item.comment.match(/\n/g);
         if (lines_match !== null) {
