@@ -1,4 +1,10 @@
 
+1.2.3 / 2015-08-25
+==================
+
+  * Replaced Google PKI certificates
+  * fixed escaping for passwords with double quotes
+
 1.2.2 / 2015-08-01
 ==================
 
