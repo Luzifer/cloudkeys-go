@@ -1,5 +1,7 @@
 package main // import "github.com/Luzifer/cloudkeys-go"
 
+//go:generate go-bindata assets templates
+
 import (
 	"crypto/sha1"
 	"fmt"
