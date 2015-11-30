@@ -1,3 +1,5 @@
+# vim: set tabstop=2 shiftwidth=2 softtabstop=2 expandtab:
+
 class CloudKeys
   constructor: () ->
     @entities = []
@@ -101,12 +103,23 @@ class CloudKeys
   decrypt: (value) ->
     return CryptoJS.AES.decrypt(value, @password).toString(CryptoJS.enc.Utf8)
 
-  getClippyCode: (value) ->
-    code = '<span class="clippy"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="14" height="14" class="clippy">'
-    code += '<param name="movie" value="../../assets/clippy.swf"/><param name="allowScriptAccess" value="always" /><param name="quality" value="high" />'
-    code += "<param name=\"scale\" value=\"noscale\" /><param name=\"FlashVars\" value=\"text=#{encodeURIComponent(value)}\"><param name=\"bgcolor\" value=\"#e5e3e9\">"
-    code += "<embed src=\"../../assets/clippy.swf\" width=\"14\" height=\"14\" name=\"clippy\" quality=\"high\" allowScriptAccess=\"always\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" FlashVars=\"text=#{encodeURIComponent(value)}\" bgcolor=\"#e5e3e9\" /></object></span>"
-    return code
+  getClipboardCode: (value) ->
+    cb = $('<div class="clipboard"></div>')
+    cb.click (e) ->
+      elem = $("<textarea>#{ value }</textarea>").css({
+        'position': 'absolute',
+        'left': '-9999px',
+        'readonly': 'readonly',
+        'top': (window.pageYOffset || document.documentElement.scrollTop) + 'px'
+      })
+
+      $("body").append(elem)
+      elem.focus()
+      elem.select()
+      document.execCommand('copy')
+      elem.remove()
+      return
+    return cb
 
   limitItems: (items) ->
     $('#resultdescription span').text(items.length)
@@ -140,16 +153,33 @@ class CloudKeys
       password = ""
       for char, i of item.password
         password += "*"
-      ul.append("<li><label>Username:</label><input type=\"text\" class=\"username\" value=\"#{ item.username }\">#{ @getClippyCode(item.username) }<br></li>")
-      ul.append("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"#{ password }\" data-toggle=\"#{ item.password.replace(/"/g, '&quot;') }\"><em> (toggle visibility)</em></span>#{ @getClippyCode(item.password) }<br></li>")
-      ul.append("<li><label>URL:</label><input type=\"text\" class=\"url\" value=\"#{ item.url }\">#{ @getClippyCode(item.url) }<br></li>")
+
+      field = $("<li><label>Username:</label><input type=\"text\" class=\"username\" value=\"#{ item.username }\"><br></li>")
+      ul.append(field)
+      @getClipboardCode(item.username).insertBefore(field.find("br"))
+
+      field = $("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"#{ password }\" data-toggle=\"#{ item.password.replace(/"/g, '&quot;') }\"><em> (toggle visibility)</em></span><br></li>")
+      ul.append(field)
+      @getClipboardCode(item.password).insertBefore(field.find("br"))
+
+      field = $("<li><label>URL:</label><input type=\"text\" class=\"url\" value=\"#{ item.url }\"><br></li>")
+      ul.append(field)
+      @getClipboardCode(item.url).insertBefore(field.find("br"))
+
       lines_match = item.comment.match(/\n/g)
       if lines_match isnt null
         counter = lines_match.length
       if counter < 2
         counter = 2
-      ul.append("<li><label>Comment:</label><textarea class=\"comment\" rows=\"#{ counter + 2 }\">#{ item.comment }</textarea>#{ @getClippyCode(item.comment) }<br></li>")
-      ul.append("<li><label>Tags:</label><input type=\"text\" class=\"tags\" value=\"#{ item.tags }\">#{ @getClippyCode(item.tags) }<br></li>")
+
+      field = $("<li><label>Comment:</label><textarea class=\"comment\" rows=\"#{ counter + 2 }\">#{ item.comment }</textarea><br></li>")
+      ul.append(field)
+      @getClipboardCode(item.comment).insertBefore(field.find("br"))
+
+      field = $("<li><label>Tags:</label><input type=\"text\" class=\"tags\" value=\"#{ item.tags }\"><br></li>")
+      ul.append(field)
+      @getClipboardCode(item.tags).insertBefore(field.find("br"))
+
       ul.append("<li class=\"last\"><button class=\"btn btn-primary\">Edit</button><br></li>")
       ul.find('.btn-primary').click () =>
         `var t = this`
