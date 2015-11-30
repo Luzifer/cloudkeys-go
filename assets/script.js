@@ -211,7 +211,7 @@
         field = $("<li><label>Username:</label><input type=\"text\" class=\"username\" value=\"" + item.username + "\"><br></li>");
         ul.append(field);
         this.getClipboardCode(item.username).insertBefore(field.find("br"));
-        field = $("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"" + password + "\" data-toggle=\"" + item.password + "\"><em> (toggle visibility)</em></span><br></li>");
+        field = $("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"" + password + "\" data-toggle=\"" + (item.password.replace(/"/g, '&quot;')) + "\"><em> (toggle visibility)</em></span><br></li>");
         ul.append(field);
         this.getClipboardCode(item.password).insertBefore(field.find("br"));
         field = $("<li><label>URL:</label><input type=\"text\" class=\"url\" value=\"" + item.url + "\"><br></li>");

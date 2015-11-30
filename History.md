@@ -1,4 +1,15 @@
 
+1.2.4 / 2015-10-28
+==================
+
+  * Improved Dockerfile and Makefile
+
+1.2.3 / 2015-08-25
+==================
+
+  * Replaced Google PKI certificates
+  * fixed escaping for passwords with double quotes
+
 1.2.2 / 2015-08-01
 ==================
 

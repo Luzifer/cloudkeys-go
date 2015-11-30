@@ -158,7 +158,7 @@ class CloudKeys
       ul.append(field)
       @getClipboardCode(item.username).insertBefore(field.find("br"))
 
-      field = $("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"#{ password }\" data-toggle=\"#{ item.password }\"><em> (toggle visibility)</em></span><br></li>")
+      field = $("<li class=\"passwordtoggle\"><label>Password:</label><input type=\"text\" class=\"password\" value=\"#{ password }\" data-toggle=\"#{ item.password.replace(/"/g, '&quot;') }\"><em> (toggle visibility)</em></span><br></li>")
       ul.append(field)
       @getClipboardCode(item.password).insertBefore(field.find("br"))
 
