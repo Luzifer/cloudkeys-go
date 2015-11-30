@@ -125,6 +125,21 @@ input {
             width: 200px;
           }
 
+          div.clipboard {
+            background: url('clipboard.png') no-repeat top left;
+            display: inline-block;
+            height: 14px;
+            width: 14px;
+
+            &:active {
+              background: url('clipboard_click.png') no-repeat top left;
+            }
+
+            &:hover {
+              background: url('clipboard_hover.png') no-repeat top left;
+            }
+          }
+
           em {
             float: left;
             font-size: 70%;
