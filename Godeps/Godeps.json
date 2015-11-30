@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/mthie/cloudkeys-go",
+	"ImportPath": "github.com/Luzifer/cloudkeys-go",
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
