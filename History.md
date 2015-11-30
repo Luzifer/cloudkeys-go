@@ -1,4 +1,9 @@
 
+1.3.0 / 2015-11-30
+==================
+
+  * Removed old clippy flash extension and replaced it with pure JS solution
+
 1.2.4 / 2015-10-28
 ==================
 
