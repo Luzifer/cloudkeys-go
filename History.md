@@ -1,3 +1,8 @@
+# 1.4.0 / 2016-05-13
+
+  * Move to go1.6 for building
+  * Migrated Godeps to go1.6 vendoring
+
 # 1.3.1 / 2016-05-13
 
   * Fix: Replace not longer available libaries
