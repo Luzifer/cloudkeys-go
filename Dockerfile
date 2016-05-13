@@ -1,14 +1,18 @@
-FROM alpine
+FROM golang:alpine
 
-VOLUME /data
-EXPOSE 3000
-ENV GOPATH /go
-ENTRYPOINT ["/go/bin/cloudkeys-go"]
-CMD ["--storage=local:////data", "--password-salt=changeme", "--username-salt=changeme"]
+MAINTAINER Knut Ahlers <knut@ahlers.me>
 
 ADD . /go/src/github.com/Luzifer/cloudkeys-go
 WORKDIR /go/src/github.com/Luzifer/cloudkeys-go
-RUN apk --update add go git ca-certificates \
- && go get github.com/tools/godep \
- && /go/bin/godep go install -ldflags "-X main.version=$(git describe --tags)" \
- && apk --purge del git go
+
+RUN set -ex \
+ && apk add --update git \
+ && go install -ldflags "-X main.version=$(git describe --tags || git rev-parse --short HEAD || echo dev)" \
+ && apk del --purge git
+
+EXPOSE 3000
+
+VOLUME ["/data"]
+
+ENTRYPOINT ["/go/bin/cloudkeys-go"]
+CMD ["--storage=local:////data", "--password-salt=changeme", "--username-salt=changeme"]
