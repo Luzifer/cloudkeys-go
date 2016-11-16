@@ -1,3 +1,7 @@
+# 1.4.1 / 2016-11-16
+
+  * Fix small typo  in the overview template “I” → “If” (Thanks [rosetree](https://github.com/rosetree))
+
 # 1.4.0 / 2016-05-13
 
   * Move to go1.6 for building
@@ -53,4 +57,3 @@
 ==================
 
   * Initial port of CloudKeys
-
