@@ -313,6 +313,7 @@ class CloudKeys
       @password = new_password
       @updateData =>
         $('#formEncPWClose').click()
+        # TODO: What next? Reload page? Show a message?
       return
 
 
