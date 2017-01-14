@@ -13,6 +13,8 @@ class CloudKeys
         @fetchData()
         $('#newEntityLink').click =>
           @showForm()
+        $('#editEncPWLink').click =>
+          @showEditEncPWForm()
 
         $('#passwordRequest').addClass('hide')
 

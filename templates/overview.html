@@ -26,6 +26,13 @@
           </ul>
           <ul class="nav navbar-nav pull-right">
             <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a id="editEncPWLink">Change Encryption Password</a></li>
+                <!-- TODO: <li><a id="editAccPWLink">Change Account Password</a></li> -->
+              </ul>
+            </li>
+            <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Switch Account <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     {% for user in authorized_accounts %}
