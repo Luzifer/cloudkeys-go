@@ -282,6 +282,38 @@ class CloudKeys
 
     return success
 
+  showEditEncPWForm: () ->
+    $('#editEncPWDialog input').val('')
+    $('#editEncPWDialog .hide').removeClass('hide')
+    $('#editEncPWDialog').modal({})
+
+    $('#editEncPWDialog .btn-primary').unbind('click').click =>
+      $('#editEncPWDialog .has-error').removeClass('has-error')
+      confirmation = confirm('Do you really want to update your encryption password?')
+
+      if confirmation isnt true
+        return
+
+      if $('#editEncPW_current_password').val() isnt @password
+        $('#editEncPW_current_password').parent().addClass('has-error')
+        return
+
+      new_password = $('#editEncPW_password').val()
+
+      if new_password is undefined or new_password is ''
+        $('#editEncPW_password').parent().addClass('has-error')
+        return
+
+      if new_password isnt $('#editEncPW_repeat_password').val()
+        $('#editEncPW_password, #editEncPW_repeat_password').parent().addClass('has-error')
+        return
+
+      @password = new_password
+      @updateData =>
+        $('#formEncPWClose').click()
+      return
+
+
 window.CloudKeys = new CloudKeys()
 $('#importLink').click =>
   $('#importContainer').toggle(500)
