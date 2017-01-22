@@ -27,14 +27,6 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 		}
 
 		if template != nil {
-			// Postponed until https://github.com/flosch/pongo2/issues/68
-			//
-			// tplsrc, err := Asset("templates/" + *template)
-			// if err != nil {
-			// 	fmt.Printf("ERR: Could not find template '%s'\n", *template)
-			// 	http.Error(res, "An error ocurred.", http.StatusInternalServerError)
-			// 	return
-			// }
 			ts := pongo2.NewSet("frontend")
 			ts.SetBaseDirectory("templates")
 			tpl, err := ts.FromFile(*template)

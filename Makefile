@@ -11,7 +11,7 @@ container: bindata.go
 	docker build .
 
 gen_css:
-	lessc --verbose -O2 -x less/*.less assets/style.css
+	lessc --verbose -x less/*.less assets/style.css
 
 gen_js:
 	coffee --compile -o assets coffee/*.coffee
