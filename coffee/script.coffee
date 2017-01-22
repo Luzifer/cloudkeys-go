@@ -313,7 +313,7 @@ class CloudKeys
       @password = new_password
       @updateData =>
         $('#formEncPWClose').click()
-        # TODO: What next? Reload page? Show a message?
+        alert 'Your encryption password has been changed. Keep this in mind for later.'
       return
 
 

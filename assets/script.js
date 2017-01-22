@@ -395,7 +395,8 @@
           }
           _this.password = new_password;
           _this.updateData(function() {
-            return $('#formEncPWClose').click();
+            $('#formEncPWClose').click();
+            return alert('Your encryption password has been changed. Keep this in mind for later.');
           });
         };
       })(this));
