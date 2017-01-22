@@ -1,3 +1,7 @@
+# 1.5.0 / 2017-01-22
+
+  * Add functionality to change encryption password (Thanks [rosetree](https://github.com/rosetree))
+
 # 1.4.1 / 2016-11-16
 
   * Fix small typo  in the overview template “I” → “If” (Thanks [rosetree](https://github.com/rosetree))
