@@ -72,29 +72,7 @@ Schema:  redis+tcp://auth:<password>@127.0.0.1:6379/<db>?timeout=10s&maxidle=1&p
 Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 ```
 
-## Install on PaaS
-### Install on CloudControl
-
-1. Create a new CloudControl app
-
-    ```
-    # cctrlapp APP_NAME create custom --buildpack https://github.com/heroku/heroku-buildpack-go
-    ```
-
-2. Push the code to your app and deploy it
-
-    ```
-    # cctrlapp APP_NAME/default push
-    # cctrlapp APP_NAME/default deploy
-    ```
-
-3. Set your configuration variables  (see env variables in usage section above)
-
-    ```
-    # cctrlapp app_name/dep_name config.add PARAM1=VALUE1 PARAM2=VALUE2 [...]
-    ```
-
-### Install on Heroku
+## Install on Heroku
 
 1. Create a new Heroku app
 
