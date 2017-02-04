@@ -1,3 +1,7 @@
+# 1.5.1 / 2017-02-04
+
+  * Fix: Hide Settings menu until data has been decrypted (Thanks [rosetree](https://github.com/rosetree))
+
 # 1.5.0 / 2017-01-22
 
   * Add functionality to change encryption password (Thanks [rosetree](https://github.com/rosetree))
