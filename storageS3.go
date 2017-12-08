@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
@@ -29,7 +30,7 @@ func newS3Storage(u *url.URL) (storageAdapter, error) {
 	return &S3Storage{
 		bucket: u.Host,
 		path:   u.Path,
-		conn:   s3.New(&aws.Config{}),
+		conn:   s3.New(session.New()),
 	}, nil
 }
 

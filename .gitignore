@@ -3,3 +3,4 @@ cloudkeys
 gin-bin
 data
 cloudkeys-go
+.env

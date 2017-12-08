@@ -1,8 +1,12 @@
 package pongo2
 
+import (
+	"bytes"
+)
+
 type tagCommentNode struct{}
 
-func (node *tagCommentNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagCommentNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	return nil
 }
 

@@ -1,12 +1,16 @@
 package pongo2
 
+import (
+	"bytes"
+)
+
 type tagIfNotEqualNode struct {
 	var1, var2  IEvaluator
 	thenWrapper *NodeWrapper
 	elseWrapper *NodeWrapper
 }
 
-func (node *tagIfNotEqualNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagIfNotEqualNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	r1, err := node.var1.Evaluate(ctx)
 	if err != nil {
 		return err
@@ -19,10 +23,10 @@ func (node *tagIfNotEqualNode) Execute(ctx *ExecutionContext, writer TemplateWri
 	result := !r1.EqualValueTo(r2)
 
 	if result {
-		return node.thenWrapper.Execute(ctx, writer)
+		return node.thenWrapper.Execute(ctx, buffer)
 	} else {
 		if node.elseWrapper != nil {
-			return node.elseWrapper.Execute(ctx, writer)
+			return node.elseWrapper.Execute(ctx, buffer)
 		}
 	}
 	return nil

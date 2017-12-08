@@ -10,11 +10,20 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/spf13/pflag"
+	validator "gopkg.in/validator.v2"
 )
 
-var fs *pflag.FlagSet
+var (
+	fs               *pflag.FlagSet
+	variableDefaults map[string]string
+)
+
+func init() {
+	variableDefaults = make(map[string]string)
+}
 
 // Parse takes the pointer to a struct filled with variables which should be read
 // from ENV, default or flag. The precedence in this is flag > ENV > default. So
@@ -25,6 +34,7 @@ var fs *pflag.FlagSet
 // the behavior of rconfig:
 //
 //     default: Set a default value
+//     vardefault: Read the default value from the variable defaults
 //     env: Read the value from this environment variable
 //     flag: Flag to read in format "long,short" (for example "listen,l")
 //     description: A help text for Usage output to guide your users
@@ -36,6 +46,20 @@ func Parse(config interface{}) error {
 	return parse(config, nil)
 }
 
+// ParseAndValidate works exactly like Parse but implements an additional run of
+// the go-validator package on the configuration struct. Therefore additonal struct
+// tags are supported like described in the readme file of the go-validator package:
+//
+// https://github.com/go-validator/validator/tree/v2#usage
+func ParseAndValidate(config interface{}) error {
+	return parseAndValidate(config, nil)
+}
+
+// Args returns the non-flag command-line arguments.
+func Args() []string {
+	return fs.Args()
+}
+
 // Usage prints a basic usage with the corresponding defaults for the flags to
 // os.Stdout. The defaults are derived from the `default` struct-tag and the ENV.
 func Usage() {
@@ -43,6 +67,20 @@ func Usage() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		fs.PrintDefaults()
 	}
+}
+
+// SetVariableDefaults presets the parser with a map of default values to be used
+// when specifying the vardefault tag
+func SetVariableDefaults(defaults map[string]string) {
+	variableDefaults = defaults
+}
+
+func parseAndValidate(in interface{}, args []string) error {
+	if err := parse(in, args); err != nil {
+		return err
+	}
+
+	return validator.Validate(in)
 }
 
 func parse(in interface{}, args []string) error {
@@ -77,8 +115,32 @@ func execTags(in interface{}, fs *pflag.FlagSet) error {
 			continue
 		}
 
-		value := envDefault(typeField.Tag.Get("env"), typeField.Tag.Get("default"))
+		value := varDefault(typeField.Tag.Get("vardefault"), typeField.Tag.Get("default"))
+		value = envDefault(typeField.Tag.Get("env"), value)
 		parts := strings.Split(typeField.Tag.Get("flag"), ",")
+
+		switch typeField.Type {
+		case reflect.TypeOf(time.Duration(0)):
+			v, err := time.ParseDuration(value)
+			if err != nil {
+				if value == "" {
+					v = time.Duration(0)
+				} else {
+					return err
+				}
+			}
+
+			if typeField.Tag.Get("flag") != "" {
+				if len(parts) == 1 {
+					fs.DurationVar(valField.Addr().Interface().(*time.Duration), parts[0], v, typeField.Tag.Get("description"))
+				} else {
+					fs.DurationVarP(valField.Addr().Interface().(*time.Duration), parts[0], parts[1], v, typeField.Tag.Get("description"))
+				}
+			} else {
+				valField.Set(reflect.ValueOf(v))
+			}
+			continue
+		}
 
 		switch typeField.Type.Kind() {
 		case reflect.String:
@@ -275,6 +337,18 @@ func envDefault(env, def string) string {
 	if env != "" {
 		if e := os.Getenv(env); e != "" {
 			value = e
+		}
+	}
+
+	return value
+}
+
+func varDefault(name, def string) string {
+	value := def
+
+	if name != "" {
+		if v, ok := variableDefaults[name]; ok {
+			value = v
 		}
 	}
 

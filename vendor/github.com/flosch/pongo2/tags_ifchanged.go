@@ -12,7 +12,7 @@ type tagIfchangedNode struct {
 	elseWrapper  *NodeWrapper
 }
 
-func (node *tagIfchangedNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagIfchangedNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 
 	if len(node.watched_expr) == 0 {
 		// Check against own rendered body
@@ -26,7 +26,7 @@ func (node *tagIfchangedNode) Execute(ctx *ExecutionContext, writer TemplateWrit
 		buf_bytes := buf.Bytes()
 		if !bytes.Equal(node.last_content, buf_bytes) {
 			// Rendered content changed, output it
-			writer.Write(buf_bytes)
+			buffer.Write(buf_bytes)
 			node.last_content = buf_bytes
 		}
 	} else {
@@ -53,13 +53,13 @@ func (node *tagIfchangedNode) Execute(ctx *ExecutionContext, writer TemplateWrit
 
 		if changed {
 			// Render thenWrapper
-			err := node.thenWrapper.Execute(ctx, writer)
+			err := node.thenWrapper.Execute(ctx, buffer)
 			if err != nil {
 				return err
 			}
 		} else {
 			// Render elseWrapper
-			err := node.elseWrapper.Execute(ctx, writer)
+			err := node.elseWrapper.Execute(ctx, buffer)
 			if err != nil {
 				return err
 			}

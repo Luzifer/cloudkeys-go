@@ -1,6 +1,7 @@
 package pongo2
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 )
@@ -85,48 +86,48 @@ func (expr *power) GetPositionToken() *Token {
 	return expr.power1.GetPositionToken()
 }
 
-func (expr *Expression) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (expr *Expression) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	value, err := expr.Evaluate(ctx)
 	if err != nil {
 		return err
 	}
-	writer.WriteString(value.String())
+	buffer.WriteString(value.String())
 	return nil
 }
 
-func (expr *relationalExpression) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (expr *relationalExpression) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	value, err := expr.Evaluate(ctx)
 	if err != nil {
 		return err
 	}
-	writer.WriteString(value.String())
+	buffer.WriteString(value.String())
 	return nil
 }
 
-func (expr *simpleExpression) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (expr *simpleExpression) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	value, err := expr.Evaluate(ctx)
 	if err != nil {
 		return err
 	}
-	writer.WriteString(value.String())
+	buffer.WriteString(value.String())
 	return nil
 }
 
-func (expr *term) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (expr *term) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	value, err := expr.Evaluate(ctx)
 	if err != nil {
 		return err
 	}
-	writer.WriteString(value.String())
+	buffer.WriteString(value.String())
 	return nil
 }
 
-func (expr *power) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (expr *power) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	value, err := expr.Evaluate(ctx)
 	if err != nil {
 		return err
 	}
-	writer.WriteString(value.String())
+	buffer.WriteString(value.String())
 	return nil
 }
 

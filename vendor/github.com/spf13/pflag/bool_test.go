@@ -6,7 +6,6 @@ package pflag
 
 import (
 	"bytes"
-	"fmt"
 	"strconv"
 	"testing"
 )
@@ -48,10 +47,10 @@ func (v *triStateValue) String() string {
 	if *v == triStateMaybe {
 		return strTriStateMaybe
 	}
-	return fmt.Sprintf("%v", bool(*v == triStateTrue))
+	return strconv.FormatBool(*v == triStateTrue)
 }
 
-// The type of the flag as requred by the pflag.Value interface
+// The type of the flag as required by the pflag.Value interface
 func (v *triStateValue) Type() string {
 	return "version"
 }
@@ -172,9 +171,9 @@ func TestBoolP(t *testing.T) {
 		t.Error("expected no error, got ", err)
 	}
 	if *b != true {
-		t.Errorf("expected b=true got b=%s", b)
+		t.Errorf("expected b=true got b=%v", *b)
 	}
 	if *c != false {
-		t.Errorf("expect c=false got c=%s", c)
+		t.Errorf("expect c=false got c=%v", *c)
 	}
 }

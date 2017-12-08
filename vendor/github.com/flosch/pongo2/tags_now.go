@@ -1,6 +1,7 @@
 package pongo2
 
 import (
+	"bytes"
 	"time"
 )
 
@@ -10,7 +11,7 @@ type tagNowNode struct {
 	fake     bool
 }
 
-func (node *tagNowNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagNowNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	var t time.Time
 	if node.fake {
 		t = time.Date(2014, time.February, 05, 18, 31, 45, 00, time.UTC)
@@ -18,7 +19,7 @@ func (node *tagNowNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *E
 		t = time.Now()
 	}
 
-	writer.WriteString(t.Format(node.format))
+	buffer.WriteString(t.Format(node.format))
 
 	return nil
 }

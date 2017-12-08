@@ -1,15 +1,19 @@
 package pongo2
 
+import (
+	"bytes"
+)
+
 type tagAutoescapeNode struct {
 	wrapper    *NodeWrapper
 	autoescape bool
 }
 
-func (node *tagAutoescapeNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagAutoescapeNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	old := ctx.Autoescape
 	ctx.Autoescape = node.autoescape
 
-	err := node.wrapper.Execute(ctx, writer)
+	err := node.wrapper.Execute(ctx, buffer)
 	if err != nil {
 		return err
 	}

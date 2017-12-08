@@ -1,6 +1,7 @@
 package pongo2
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 )
@@ -12,7 +13,7 @@ type tagWidthratioNode struct {
 	ctx_name     string
 }
 
-func (node *tagWidthratioNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagWidthratioNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	current, err := node.current.Evaluate(ctx)
 	if err != nil {
 		return err
@@ -31,7 +32,7 @@ func (node *tagWidthratioNode) Execute(ctx *ExecutionContext, writer TemplateWri
 	value := int(math.Ceil(current.Float()/max.Float()*width.Float() + 0.5))
 
 	if node.ctx_name == "" {
-		writer.WriteString(fmt.Sprintf("%d", value))
+		buffer.WriteString(fmt.Sprintf("%d", value))
 	} else {
 		ctx.Private[node.ctx_name] = value
 	}

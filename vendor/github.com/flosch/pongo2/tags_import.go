@@ -1,6 +1,7 @@
 package pongo2
 
 import (
+	"bytes"
 	"fmt"
 )
 
@@ -11,7 +12,7 @@ type tagImportNode struct {
 	macros   map[string]*tagMacroNode // alias/name -> macro instance
 }
 
-func (node *tagImportNode) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
+func (node *tagImportNode) Execute(ctx *ExecutionContext, buffer *bytes.Buffer) *Error {
 	for name, macro := range node.macros {
 		func(name string, macro *tagMacroNode) {
 			ctx.Private[name] = func(args ...*Value) *Value {

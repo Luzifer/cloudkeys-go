@@ -29,6 +29,7 @@ import (
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/sha1"
+	"database/sql/driver"
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
@@ -58,9 +59,14 @@ const (
 // UUID epoch (October 15, 1582) and Unix epoch (January 1, 1970).
 const epochStart = 122192928000000000
 
+// Used in string method conversion
+const dash byte = '-'
+
 // UUID v1/v2 storage.
 var (
 	storageMutex  sync.Mutex
+	storageOnce   sync.Once
+	epochFunc     = unixTimeFunc
 	clockSequence uint16
 	lastTime      uint64
 	hardwareAddr  [6]byte
@@ -74,32 +80,40 @@ var (
 	byteGroups = []int{8, 4, 4, 4, 12}
 )
 
-// Epoch calculation function
-var epochFunc func() uint64
-
-// Initialize storage
-func init() {
+func initClockSequence() {
 	buf := make([]byte, 2)
-	rand.Read(buf)
+	safeRandom(buf)
 	clockSequence = binary.BigEndian.Uint16(buf)
+}
 
-	// Initialize hardwareAddr randomly in case
-	// of real network interfaces absence
-	rand.Read(hardwareAddr[:])
-
-	// Set multicast bit as recommended in RFC 4122
-	hardwareAddr[0] |= 0x01
-
+func initHardwareAddr() {
 	interfaces, err := net.Interfaces()
 	if err == nil {
 		for _, iface := range interfaces {
 			if len(iface.HardwareAddr) >= 6 {
 				copy(hardwareAddr[:], iface.HardwareAddr)
-				break
+				return
 			}
 		}
 	}
-	epochFunc = unixTimeFunc
+
+	// Initialize hardwareAddr randomly in case
+	// of real network interfaces absence
+	safeRandom(hardwareAddr[:])
+
+	// Set multicast bit as recommended in RFC 4122
+	hardwareAddr[0] |= 0x01
+}
+
+func initStorage() {
+	initClockSequence()
+	initHardwareAddr()
+}
+
+func safeRandom(dest []byte) {
+	if _, err := rand.Read(dest); err != nil {
+		panic(err)
+	}
 }
 
 // Returns difference in 100-nanosecond intervals between
@@ -112,6 +126,17 @@ func unixTimeFunc() uint64 {
 // UUID representation compliant with specification
 // described in RFC 4122.
 type UUID [16]byte
+
+// NullUUID can be used with the standard sql package to represent a
+// UUID value that can be NULL in the database
+type NullUUID struct {
+	UUID  UUID
+	Valid bool
+}
+
+// The nil UUID is special form of UUID that is specified to have all
+// 128 bits set to zero.
+var Nil = UUID{}
 
 // Predefined namespace UUIDs.
 var (
@@ -170,8 +195,19 @@ func (u UUID) Bytes() []byte {
 // Returns canonical string representation of UUID:
 // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
 func (u UUID) String() string {
-	return fmt.Sprintf("%x-%x-%x-%x-%x",
-		u[:4], u[4:6], u[6:8], u[8:10], u[10:])
+	buf := make([]byte, 36)
+
+	hex.Encode(buf[0:8], u[0:4])
+	buf[8] = dash
+	hex.Encode(buf[9:13], u[4:6])
+	buf[13] = dash
+	hex.Encode(buf[14:18], u[6:8])
+	buf[18] = dash
+	hex.Encode(buf[19:23], u[8:10])
+	buf[23] = dash
+	hex.Encode(buf[24:], u[10:])
+
+	return string(buf)
 }
 
 // SetVersion sets version bits.
@@ -198,30 +234,55 @@ func (u UUID) MarshalText() (text []byte, err error) {
 // "urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 func (u *UUID) UnmarshalText(text []byte) (err error) {
 	if len(text) < 32 {
-		err = fmt.Errorf("uuid: invalid UUID string: %s", text)
+		err = fmt.Errorf("uuid: UUID string too short: %s", text)
 		return
 	}
 
-	if bytes.Equal(text[:9], urnPrefix) {
-		text = text[9:]
-	} else if text[0] == '{' {
-		text = text[1:]
+	t := text[:]
+	braced := false
+
+	if bytes.Equal(t[:9], urnPrefix) {
+		t = t[9:]
+	} else if t[0] == '{' {
+		braced = true
+		t = t[1:]
 	}
 
 	b := u[:]
 
-	for _, byteGroup := range byteGroups {
-		if text[0] == '-' {
-			text = text[1:]
+	for i, byteGroup := range byteGroups {
+		if i > 0 && t[0] == '-' {
+			t = t[1:]
+		} else if i > 0 && t[0] != '-' {
+			err = fmt.Errorf("uuid: invalid string format")
+			return
 		}
 
-		_, err = hex.Decode(b[:byteGroup/2], text[:byteGroup])
+		if i == 2 {
+			if !bytes.Contains([]byte("012345"), []byte{t[0]}) {
+				err = fmt.Errorf("uuid: invalid version number: %s", t[0])
+				return
+			}
+		}
+
+		if len(t) < byteGroup {
+			err = fmt.Errorf("uuid: UUID string too short: %s", text)
+			return
+		}
+
+		if i == 4 && len(t) > byteGroup &&
+			((braced && t[byteGroup] != '}') || len(t[byteGroup:]) > 1 || !braced) {
+			err = fmt.Errorf("uuid: UUID string too long: %s", t)
+			return
+		}
+
+		_, err = hex.Decode(b[:byteGroup/2], t[:byteGroup])
 
 		if err != nil {
 			return
 		}
 
-		text = text[byteGroup:]
+		t = t[byteGroup:]
 		b = b[byteGroup/2:]
 	}
 
@@ -246,6 +307,11 @@ func (u *UUID) UnmarshalBinary(data []byte) (err error) {
 	return
 }
 
+// Value implements the driver.Valuer interface.
+func (u UUID) Value() (driver.Value, error) {
+	return u.String(), nil
+}
+
 // Scan implements the sql.Scanner interface.
 // A 16-byte slice is handled by UnmarshalBinary, while
 // a longer byte slice or a string is handled by UnmarshalText.
@@ -264,11 +330,42 @@ func (u *UUID) Scan(src interface{}) error {
 	return fmt.Errorf("uuid: cannot convert %T to UUID", src)
 }
 
+// Value implements the driver.Valuer interface.
+func (u NullUUID) Value() (driver.Value, error) {
+	if !u.Valid {
+		return nil, nil
+	}
+	// Delegate to UUID Value function
+	return u.UUID.Value()
+}
+
+// Scan implements the sql.Scanner interface.
+func (u *NullUUID) Scan(src interface{}) error {
+	if src == nil {
+		u.UUID, u.Valid = Nil, false
+		return nil
+	}
+
+	// Delegate to UUID Scan function
+	u.Valid = true
+	return u.UUID.Scan(src)
+}
+
 // FromBytes returns UUID converted from raw byte slice input.
 // It will return error if the slice isn't 16 bytes long.
 func FromBytes(input []byte) (u UUID, err error) {
 	err = u.UnmarshalBinary(input)
 	return
+}
+
+// FromBytesOrNil returns UUID converted from raw byte slice input.
+// Same behavior as FromBytes, but returns a Nil UUID on error.
+func FromBytesOrNil(input []byte) UUID {
+	uuid, err := FromBytes(input)
+	if err != nil {
+		return Nil
+	}
+	return uuid
 }
 
 // FromString returns UUID parsed from string input.
@@ -278,9 +375,21 @@ func FromString(input string) (u UUID, err error) {
 	return
 }
 
+// FromStringOrNil returns UUID parsed from string input.
+// Same behavior as FromString, but returns a Nil UUID on error.
+func FromStringOrNil(input string) UUID {
+	uuid, err := FromString(input)
+	if err != nil {
+		return Nil
+	}
+	return uuid
+}
+
 // Returns UUID v1/v2 storage state.
-// Returns epoch timestamp and clock sequence.
-func getStorage() (uint64, uint16) {
+// Returns epoch timestamp, clock sequence, and hardware address.
+func getStorage() (uint64, uint16, []byte) {
+	storageOnce.Do(initStorage)
+
 	storageMutex.Lock()
 	defer storageMutex.Unlock()
 
@@ -292,21 +401,21 @@ func getStorage() (uint64, uint16) {
 	}
 	lastTime = timeNow
 
-	return timeNow, clockSequence
+	return timeNow, clockSequence, hardwareAddr[:]
 }
 
 // NewV1 returns UUID based on current timestamp and MAC address.
 func NewV1() UUID {
 	u := UUID{}
 
-	timeNow, clockSeq := getStorage()
+	timeNow, clockSeq, hardwareAddr := getStorage()
 
 	binary.BigEndian.PutUint32(u[0:], uint32(timeNow))
 	binary.BigEndian.PutUint16(u[4:], uint16(timeNow>>32))
 	binary.BigEndian.PutUint16(u[6:], uint16(timeNow>>48))
 	binary.BigEndian.PutUint16(u[8:], clockSeq)
 
-	copy(u[10:], hardwareAddr[:])
+	copy(u[10:], hardwareAddr)
 
 	u.SetVersion(1)
 	u.SetVariant()
@@ -318,6 +427,8 @@ func NewV1() UUID {
 func NewV2(domain byte) UUID {
 	u := UUID{}
 
+	timeNow, clockSeq, hardwareAddr := getStorage()
+
 	switch domain {
 	case DomainPerson:
 		binary.BigEndian.PutUint32(u[0:], posixUID)
@@ -325,14 +436,12 @@ func NewV2(domain byte) UUID {
 		binary.BigEndian.PutUint32(u[0:], posixGID)
 	}
 
-	timeNow, clockSeq := getStorage()
-
 	binary.BigEndian.PutUint16(u[4:], uint16(timeNow>>32))
 	binary.BigEndian.PutUint16(u[6:], uint16(timeNow>>48))
 	binary.BigEndian.PutUint16(u[8:], clockSeq)
 	u[9] = domain
 
-	copy(u[10:], hardwareAddr[:])
+	copy(u[10:], hardwareAddr)
 
 	u.SetVersion(2)
 	u.SetVariant()
@@ -352,7 +461,7 @@ func NewV3(ns UUID, name string) UUID {
 // NewV4 returns random generated UUID.
 func NewV4() UUID {
 	u := UUID{}
-	rand.Read(u[:])
+	safeRandom(u[:])
 	u.SetVersion(4)
 	u.SetVariant()
 
