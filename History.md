@@ -1,3 +1,10 @@
+# 1.6.0 / 2017-12-08
+
+  * Update javascript libraries
+  * Switch to dep for vendoring, update dependencies
+  * Switch to Github publishing
+  * Update Meta-Files
+
 # 1.5.1 / 2017-02-04
 
   * Fix: Hide Settings menu until data has been decrypted (Thanks [rosetree](https://github.com/rosetree))
