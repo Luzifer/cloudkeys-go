@@ -1,6 +1,9 @@
-# CloudKeys Go
+[![Go Report Card](https://goreportcard.com/badge/github.com/Luzifer/cloudkeys-go)](https://goreportcard.com/report/github.com/Luzifer/vault2env)
+![](https://badges.fyi/github/license/Luzifer/cloudkeys-go)
+![](https://badges.fyi/github/downloads/Luzifer/cloudkeys-go)
+![](https://badges.fyi/github/latest-release/Luzifer/cloudkeys-go)
 
-[![License: Apache v2.0](https://badge.luzifer.io/v1/badge?color=5d79b5&title=license&text=Apache+v2.0)](http://www.apache.org/licenses/LICENSE-2.0) [![Download binaries](https://badge.luzifer.io/v1/badge?color=5d79b5&title=Download&text=on+GoBuilder.me)](https://gobuilder.me/github.com/Luzifer/cloudkeys-go)
+# CloudKeys Go
 
 CloudKeys Go is a port of the [former CloudKeys project](https://github.com/awesomecoders/cloudkeys) written in PHP. This Go port is 100% compatible to the data written by the older version but adds more storage options. Also it's faster, more stable and last but not least it's not longer based on PHP but working as a tiny webserver implemented in pure Go.
 
