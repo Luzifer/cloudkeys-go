@@ -21,3 +21,7 @@ bindata.go: gen_css gen_js
 
 $(GOPATH)/bin/godep:
 	go get github.com/tools/godep
+
+publish:
+	curl -sSLo golang.sh https://raw.githubusercontent.com/Luzifer/github-publish/master/golang.sh
+	bash golang.sh
