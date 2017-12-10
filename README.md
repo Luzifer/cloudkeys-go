@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/Luzifer/cloudkeys-go)](https://goreportcard.com/report/github.com/Luzifer/vault2env)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Luzifer/cloudkeys-go)](https://goreportcard.com/report/github.com/Luzifer/cloudkeys-go)
 ![](https://badges.fyi/github/license/Luzifer/cloudkeys-go)
 ![](https://badges.fyi/github/downloads/Luzifer/cloudkeys-go)
 ![](https://badges.fyi/github/latest-release/Luzifer/cloudkeys-go)
