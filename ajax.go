@@ -8,6 +8,7 @@ import (
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/sessions"
+	log "github.com/sirupsen/logrus"
 )
 
 type ajaxResponse struct {
@@ -33,7 +34,7 @@ func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.
 
 	userFileRaw, err := storage.Read(user.UserFile)
 	if err != nil {
-		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		log.WithError(err).Error("Could not read user file from storage")
 		res.Write(ajaxResponse{Error: true}.Bytes())
 		return nil, nil
 	}
@@ -60,7 +61,7 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	userFileRaw, err := storage.Read(user.UserFile)
 	if err != nil {
-		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		log.WithError(err).Error("Could not read user file from storage")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
 		return nil, nil
 	}
@@ -84,7 +85,7 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	}
 
 	if err := storage.Backup(user.UserFile); err != nil {
-		fmt.Printf("ERR: Unable to backup user file: %s\n", err)
+		log.WithError(err).Error("Could not create backup of user file")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
 		return nil, nil
 	}
@@ -95,7 +96,7 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	d, _ := userFile.GetData()
 
 	if err := storage.Write(user.UserFile, d); err != nil {
-		fmt.Printf("ERR: Unable to write user file: %s\n", err)
+		log.WithError(err).Error("Could not write user file to storage")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
 		return nil, nil
 	}

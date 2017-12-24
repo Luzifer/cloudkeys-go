@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -9,6 +8,7 @@ import (
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/sessions"
+	log "github.com/sirupsen/logrus"
 )
 
 func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
@@ -29,7 +29,7 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		fmt.Printf("ERR: Unable to hash users password: %s\n", err)
+		log.WithError(err).Error("Could not hash user password")
 		(*ctx)["error"] = true
 		return stringPointer("register.html"), nil
 	}
@@ -39,7 +39,7 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	data, _ := d.GetData()
 
 	if err := storage.Write(createUserFilename(username), data); err != nil {
-		fmt.Printf("ERR: Unable to write user file: %s\n", err)
+		log.WithError(err).Error("Could not write user file to storage")
 		(*ctx)["error"] = true
 		return stringPointer("register.html"), nil
 	}

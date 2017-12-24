@@ -12,6 +12,7 @@ import (
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	log "github.com/sirupsen/logrus"
 )
 
 func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
@@ -28,7 +29,7 @@ func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Se
 
 	userFileRaw, err := storage.Read(createUserFilename(username))
 	if err != nil {
-		fmt.Printf("ERR: Unable to read user file: %s\n", err)
+		log.WithError(err).Error("Unable to read user file")
 		(*ctx)["error"] = true
 		return stringPointer("login.html"), nil
 	}

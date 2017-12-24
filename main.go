@@ -13,6 +13,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/satori/go.uuid"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -30,18 +31,18 @@ func init() {
 	}
 
 	if _, err := cfg.ParsedStorage(); err != nil {
-		fmt.Printf("ERR: Please provide a valid storage URI\n")
+		log.WithError(err).Error("Unable to parse storage URI")
 		os.Exit(1)
 	}
 
 	if cfg.CookieSigningKey == "" {
 		cfg.CookieSigningKey = uuid.NewV4().String()[:32]
-		fmt.Printf("WRN: cookie-authkey was set randomly, this will break your sessions!\n")
+		log.Warn("cookie-authkey was set randomly, this will break your sessions!")
 	}
 
 	if cfg.CookieEncryptKey == "" {
 		cfg.CookieEncryptKey = uuid.NewV4().String()[:32]
-		fmt.Printf("WRN: cookie-encryptkey was set randomly, this will break your sessions!\n")
+		log.Warn("cookie-encryptkey was set randomly, this will break your sessions!")
 	}
 
 	cookieStore = sessions.NewCookieStore(
@@ -53,8 +54,7 @@ func init() {
 func main() {
 	s, err := getStorageAdapter(cfg)
 	if err != nil {
-		fmt.Printf("ERR: Could not instanciate storage: %s\n", err)
-		os.Exit(1)
+		log.WithError(err).Fatal("Could not instanciate storage")
 	}
 	storage = s
 

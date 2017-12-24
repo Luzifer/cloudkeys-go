@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/sessions"
+	log "github.com/sirupsen/logrus"
 )
 
 type httpHelperFunc func(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error)
@@ -22,7 +22,7 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 		template, err := f(res, r, sess, &ctx)
 		if err != nil {
 			http.Error(res, "An error ocurred.", http.StatusInternalServerError)
-			fmt.Printf("ERR: %s\n", err)
+			log.WithError(err).Error("Unable to execute template")
 			return
 		}
 
@@ -31,13 +31,17 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 			ts.SetBaseDirectory("templates")
 			tpl, err := ts.FromFile(*template)
 			if err != nil {
-				fmt.Printf("ERR: Could not parse template '%s': %s\n", *template, err)
+				log.WithError(err).WithFields(log.Fields{
+					"template": *template,
+				}).Error("Could not parse template")
 				http.Error(res, "An error ocurred.", http.StatusInternalServerError)
 				return
 			}
 			out, err := tpl.Execute(ctx)
 			if err != nil {
-				fmt.Printf("ERR: Unable to execute template '%s': %s\n", *template, err)
+				log.WithError(err).WithFields(log.Fields{
+					"template": *template,
+				}).Error("Could not execute template")
 				http.Error(res, "An error ocurred.", http.StatusInternalServerError)
 				return
 			}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/url"
@@ -10,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/xuyu/goredis"
 )
 
@@ -57,7 +57,10 @@ func (r *RedisStorage) Read(identifier string) (io.Reader, error) {
 func (r *RedisStorage) IsPresent(identifier string) bool {
 	e, err := r.conn.Exists(r.prefix + identifier)
 	if err != nil {
-		fmt.Printf("ERR: %s\n", err)
+		log.WithError(err).WithFields(log.Fields{
+			"storagedriver": "redis",
+			"identifier":    identifier,
+		}).Error("Unable to check key existence")
 	}
 	return e && err == nil
 }
