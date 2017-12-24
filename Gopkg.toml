@@ -41,3 +41,6 @@
 
 [[constraint]]
   name = "github.com/xuyu/goredis"
+
+[[constraint]]
+  name = "golang.org/x/crypto"
