@@ -1,3 +1,7 @@
+# 1.8.0 / 2017-12-24
+
+  * Replace stdout logging with proper log package
+
 # 1.7.0 / 2017-12-24
 
   * Replace insecure password hashing (Thanks [kpcyrd](https://github.com/kpcyrd) for the report)
