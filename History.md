@@ -1,3 +1,8 @@
+# 1.7.0 / 2017-12-24
+
+  * Replace insecure password hashing (Thanks [kpcyrd](https://github.com/kpcyrd) for the report)
+  * Link to cloudkeys go report card
+
 # 1.6.1 / 2017-12-08
 
   * Fix: Broken script URLs
