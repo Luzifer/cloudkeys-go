@@ -40,6 +40,9 @@
   name = "github.com/satori/go.uuid"
 
 [[constraint]]
+  name = "github.com/sirupsen/logrus"
+
+[[constraint]]
   name = "github.com/xuyu/goredis"
 
 [[constraint]]
