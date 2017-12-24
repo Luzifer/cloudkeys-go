@@ -17,7 +17,7 @@ import (
 func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	var (
 		username           = strings.ToLower(r.FormValue("username"))
-		password           = r.FormValue("passsword")
+		password           = r.FormValue("password")
 		deprecatedPassword = fmt.Sprintf("%x", sha1.Sum([]byte(cfg.PasswordSalt+r.FormValue("password")))) // Here for backwards compatibility
 	)
 
