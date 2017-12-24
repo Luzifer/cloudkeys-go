@@ -9,7 +9,7 @@
 
 [[projects]]
   name = "github.com/aws/aws-sdk-go"
-  packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/credentials","aws/endpoints","aws/request","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/restxml","private/protocol/xml/xmlutil","service/s3"]
+  packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/corehandlers","aws/credentials","aws/credentials/ec2rolecreds","aws/credentials/endpointcreds","aws/credentials/stscreds","aws/defaults","aws/ec2metadata","aws/endpoints","aws/request","aws/session","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/restxml","private/protocol/xml/xmlutil","service/s3","service/sts"]
   revision = "66ca5909f9d7ee2253b756ece0aa3c4970ce04e1"
   version = "v1.12.43"
 
@@ -73,6 +73,12 @@
   revision = "89fbe9474b3758ff3adf0b7b29c95aeed115fb7b"
 
 [[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["bcrypt","blowfish"]
+  revision = "d585fd2cc9195196078f516b69daff6744ef5e84"
+
+[[projects]]
   branch = "v2"
   name = "gopkg.in/validator.v2"
   packages = ["."]
@@ -87,6 +93,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "40bb0708e6c140db182b2ce4e5e72db906ac336fc80d54923f6112954d91719c"
+  inputs-digest = "cc41292ba7bed404723405bb5759aac2aeef6e5357549d26012a6c0f9d7558bd"
   solver-name = "gps-cdcl"
   solver-version = 1

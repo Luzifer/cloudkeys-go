@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -14,8 +16,9 @@ import (
 
 func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	var (
-		username = strings.ToLower(r.FormValue("username"))
-		password = fmt.Sprintf("%x", sha1.Sum([]byte(cfg.PasswordSalt+r.FormValue("password"))))
+		username           = strings.ToLower(r.FormValue("username"))
+		password           = r.FormValue("password")
+		deprecatedPassword = fmt.Sprintf("%x", sha1.Sum([]byte(cfg.PasswordSalt+r.FormValue("password")))) // Here for backwards compatibility
 	)
 
 	if !storage.IsPresent(createUserFilename(username)) {
@@ -32,7 +35,8 @@ func loginHandler(res http.ResponseWriter, r *http.Request, session *sessions.Se
 
 	userFile, _ := readDataObject(userFileRaw)
 
-	if userFile.MetaData.Password != password {
+	bcryptValidationError := bcrypt.CompareHashAndPassword([]byte(userFile.MetaData.Password), []byte(password))
+	if bcryptValidationError != nil && userFile.MetaData.Password != deprecatedPassword {
 		(*ctx)["error"] = true
 		return stringPointer("login.html"), nil
 	}

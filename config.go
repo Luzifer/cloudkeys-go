@@ -8,7 +8,7 @@ import (
 
 type config struct {
 	// General Config
-	PasswordSalt string `env:"passwordSalt" flag:"password-salt" description:"A random unique salt for encrypting the passwords"`
+	PasswordSalt string `env:"passwordSalt" flag:"password-salt" description:"[deprecated] A random unique salt for encrypting the passwords"`
 	UsernameSalt string `env:"usernameSalt" flag:"username-salt" description:"A random unique salt for encrypting the usernames"`
 	Storage      string `env:"storage" flag:"storage" default:"local:///./data" description:"Configuration for storage adapter (see README.md)"`
 	Listen       string `flag:"listen" env:"listen" default:":3000" description:"IP and port to listen on"`
