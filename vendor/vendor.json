@@ -1,0 +1,55 @@
+{
+	"comment": "",
+	"ignore": "",
+	"package": [
+		{
+			"checksumSHA1": "IpAddEX/EbPyyJQavgmTsly/Cac=",
+			"path": "github.com/flosch/pongo2",
+			"revision": "1f4be1efe3b3529b7e58861f75d70120a9567dc4",
+			"revisionTime": "2017-09-06T22:20:41Z"
+		},
+		{
+			"checksumSHA1": "eanpgYEg5eXSlj3NIJzMk8OmWeI=",
+			"path": "github.com/juju/errors",
+			"revision": "c7d06af17c68cd34c835053720b21f6549d9b0ee",
+			"revisionTime": "2017-07-03T01:00:42Z"
+		},
+		{
+			"checksumSHA1": "p/odgPLplgb1G+63w520kXyJDe0=",
+			"path": "github.com/juju/loggo",
+			"revision": "8232ab8918d91c72af1a9fb94d3edbe31d88b790",
+			"revisionTime": "2017-06-05T01:46:07Z"
+		},
+		{
+			"checksumSHA1": "85+Ev/uwnSzjCmzTcKNEAfJf1IM=",
+			"path": "github.com/juju/testing/checkers",
+			"revision": "2fe0e88cf2321d801acedd2b4f0d7f63735fb732",
+			"revisionTime": "2017-06-08T05:44:51Z"
+		},
+		{
+			"checksumSHA1": "538I8ghUdvZa25NxgMUDpq14Qic=",
+			"path": "gopkg.in/check.v1",
+			"revision": "20d25e2804050c1cd24a7eea1e7a6447dd0e74ec",
+			"revisionTime": "2016-12-08T18:13:25Z"
+		},
+		{
+			"checksumSHA1": "+mZKlPX9t4fHOQvkQeCnWw5JjkQ=",
+			"path": "gopkg.in/mgo.v2/bson",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "trGhCcEZSOZTwlLfWCRAoXXihW8=",
+			"path": "gopkg.in/mgo.v2/internal/json",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "lrm5Q9f19sXdN9oGikiwdzvWUi0=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "287cf08546ab5e7e37d55a84f7ed3fd1db036de5",
+			"revisionTime": "2017-11-16T09:02:43Z"
+		}
+	],
+	"rootPath": "github.com/mthie/cloudkeys-go"
+}
