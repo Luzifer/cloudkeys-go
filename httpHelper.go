@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/flosch/pongo2"
@@ -8,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type httpHelperFunc func(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error)
+type httpHelperFunc func(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error)
 
 func httpHelper(f httpHelperFunc) http.HandlerFunc {
 	return func(res http.ResponseWriter, r *http.Request) {
@@ -19,7 +20,9 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 			ctx["error"] = errFlash[0].(string)
 		}
 
-		template, err := f(res, r, sess, &ctx)
+		c := getContext(r)
+
+		template, err := f(c, res, r, sess, &ctx)
 		if err != nil {
 			http.Error(res, "An error ocurred.", http.StatusInternalServerError)
 			log.WithError(err).Error("Unable to execute template")
@@ -27,8 +30,7 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 		}
 
 		if template != nil {
-			ts := pongo2.NewSet("frontend")
-			ts.SetBaseDirectory("templates")
+			ts := pongo2.NewSet("frontend", pongo2.MustNewLocalFileSystemLoader("templates"))
 			tpl, err := ts.FromFile(*template)
 			if err != nil {
 				log.WithError(err).WithFields(log.Fields{
@@ -52,7 +54,7 @@ func httpHelper(f httpHelperFunc) http.HandlerFunc {
 }
 
 func simpleTemplateOutput(template string) httpHelperFunc {
-	return func(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
+	return func(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 		return &template, nil
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
+func registerHandler(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	var (
 		username      = strings.ToLower(r.FormValue("username"))
 		password      = r.FormValue("password")
@@ -22,7 +23,7 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 		return stringPointer("register.html"), nil
 	}
 
-	if storage.IsPresent(createUserFilename(username)) {
+	if storage.IsPresent(c, createUserFilename(username)) {
 		(*ctx)["exists"] = true
 		return stringPointer("register.html"), nil
 	}
@@ -38,7 +39,7 @@ func registerHandler(res http.ResponseWriter, r *http.Request, session *sessions
 	d.MetaData.Password = string(hashedPassword)
 	data, _ := d.GetData()
 
-	if err := storage.Write(createUserFilename(username), data); err != nil {
+	if err := storage.Write(c, createUserFilename(username), data); err != nil {
 		log.WithError(err).Error("Could not write user file to storage")
 		(*ctx)["error"] = true
 		return stringPointer("register.html"), nil

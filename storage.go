@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/url"
@@ -11,10 +12,10 @@ var (
 )
 
 type storageAdapter interface {
-	Write(identifier string, data io.Reader) error
-	Read(identifier string) (io.Reader, error)
-	IsPresent(identifier string) bool
-	Backup(identifier string) error
+	Write(ctx context.Context, identifier string, data io.Reader) error
+	Read(ctx context.Context, identifier string) (io.Reader, error)
+	IsPresent(ctx context.Context, identifier string) bool
+	Backup(ctx context.Context, identifier string) error
 }
 type storageAdapterInitializer func(*url.URL) (storageAdapter, error)
 

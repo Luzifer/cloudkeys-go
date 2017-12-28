@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
@@ -23,16 +24,16 @@ func (a ajaxResponse) Bytes() []byte {
 	return out
 }
 
-func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
+func ajaxGetHandler(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	res.Header().Set("Content-Type", "application/json")
-	user, _ := checkLogin(r, session)
+	user, _ := checkLogin(c, r, session)
 
-	if user == nil || !storage.IsPresent(user.UserFile) {
+	if user == nil || !storage.IsPresent(c, user.UserFile) {
 		res.Write(ajaxResponse{Error: true}.Bytes())
 		return nil, nil
 	}
 
-	userFileRaw, err := storage.Read(user.UserFile)
+	userFileRaw, err := storage.Read(c, user.UserFile)
 	if err != nil {
 		log.WithError(err).Error("Could not read user file from storage")
 		res.Write(ajaxResponse{Error: true}.Bytes())
@@ -45,21 +46,21 @@ func ajaxGetHandler(res http.ResponseWriter, r *http.Request, session *sessions.
 	return nil, nil
 }
 
-func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
+func ajaxPostHandler(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
 	res.Header().Set("Content-Type", "application/json")
-	user, _ := checkLogin(r, session)
+	user, _ := checkLogin(c, r, session)
 
 	if user == nil {
 		res.Write(ajaxResponse{Error: true, Type: "login"}.Bytes())
 		return nil, nil
 	}
 
-	if !storage.IsPresent(user.UserFile) {
+	if !storage.IsPresent(c, user.UserFile) {
 		res.Write(ajaxResponse{Error: true, Type: "register"}.Bytes())
 		return nil, nil
 	}
 
-	userFileRaw, err := storage.Read(user.UserFile)
+	userFileRaw, err := storage.Read(c, user.UserFile)
 	if err != nil {
 		log.WithError(err).Error("Could not read user file from storage")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
@@ -84,7 +85,7 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 		return nil, nil
 	}
 
-	if err := storage.Backup(user.UserFile); err != nil {
+	if err := storage.Backup(c, user.UserFile); err != nil {
 		log.WithError(err).Error("Could not create backup of user file")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
 		return nil, nil
@@ -95,7 +96,7 @@ func ajaxPostHandler(res http.ResponseWriter, r *http.Request, session *sessions
 
 	d, _ := userFile.GetData()
 
-	if err := storage.Write(user.UserFile, d); err != nil {
+	if err := storage.Write(c, user.UserFile, d); err != nil {
 		log.WithError(err).Error("Could not write user file to storage")
 		res.Write(ajaxResponse{Error: true, Type: "storage_error"}.Bytes())
 		return nil, nil
