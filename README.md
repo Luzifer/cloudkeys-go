@@ -96,38 +96,38 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 1. Remove the vendor folder and get the current libraries
 
     ```
-    # rm -r vendor && go get -v -u ./...
+    $ rm -r vendor && go get -v -u ./...
     ```
 
 2. Fake os.Args in config.go
 
     ```
-$ git diff config.go
-diff --git a/config.go b/config.go
-index f2bbf2e..542c276 100644
---- a/config.go
-+++ b/config.go
-@@ -2,6 +2,7 @@ package main
- 
- import (
-        "net/url"
-+       "os"
- 
-        "github.com/Luzifer/rconfig"
- )
-@@ -24,6 +25,8 @@ func (c config) ParsedStorage() (*url.URL, error) {
- }
- 
- func loadConfig() *config {
-+       os.Args = []string{os.Args[0]}
-+
-        cfg := &config{}
-        rconfig.Parse(cfg)
-        return cfg
+    $ git diff config.go
+    diff --git a/config.go b/config.go
+    index f2bbf2e..542c276 100644
+    --- a/config.go
+    +++ b/config.go
+    @@ -2,6 +2,7 @@ package main
+     
+     import (
+            "net/url"
+    +       "os"
+     
+            "github.com/Luzifer/rconfig"
+     )
+    @@ -24,6 +25,8 @@ func (c config) ParsedStorage() (*url.URL, error) {
+     }
+     
+     func loadConfig() *config {
+    +       os.Args = []string{os.Args[0]}
+    +
+            cfg := &config{}
+            rconfig.Parse(cfg)
+            return cfg
     ```
 
 3. Deploy on App Engine
 
 		```
-		# appcfg.py update .
+		$ appcfg.py update .
 		```
