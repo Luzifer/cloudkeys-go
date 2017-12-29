@@ -1,10 +1,6 @@
 package main
 
-import (
-	"net/url"
-
-	"github.com/Luzifer/rconfig"
-)
+import "net/url"
 
 type config struct {
 	// General Config
@@ -21,10 +17,4 @@ type config struct {
 
 func (c config) ParsedStorage() (*url.URL, error) {
 	return url.Parse(c.Storage)
-}
-
-func loadConfig() *config {
-	cfg := &config{}
-	rconfig.Parse(cfg)
-	return cfg
 }
