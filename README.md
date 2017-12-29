@@ -99,31 +99,9 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
     $ rm -r vendor && go get -v -u ./...
     ```
 
-2. Fake os.Args in config.go
-
+2. Create app.yaml and set the correct settings
     ```
-    $ git diff config.go
-    diff --git a/config.go b/config.go
-    index f2bbf2e..542c276 100644
-    --- a/config.go
-    +++ b/config.go
-    @@ -2,6 +2,7 @@ package main
-     
-     import (
-            "net/url"
-    +       "os"
-     
-            "github.com/Luzifer/rconfig"
-     )
-    @@ -24,6 +25,8 @@ func (c config) ParsedStorage() (*url.URL, error) {
-     }
-     
-     func loadConfig() *config {
-    +       os.Args = []string{os.Args[0]}
-    +
-            cfg := &config{}
-            rconfig.Parse(cfg)
-            return cfg
+    $ copy app.yaml.example app.yaml
     ```
 
 3. Deploy on App Engine
