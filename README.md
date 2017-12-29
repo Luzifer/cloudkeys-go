@@ -128,6 +128,6 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 
 3. Deploy on App Engine
 
-		```
+    ```
 		$ appcfg.py update .
-		```
+    ```
