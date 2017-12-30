@@ -1,3 +1,8 @@
+# 1.9.0 / 2017-12-30
+
+  * Add support for deployments on Google AppEngine (Thanks [mthie](https://github.com/mthie))
+  * Update vendoring using `dep`
+
 # 1.8.0 / 2017-12-24
 
   * Replace stdout logging with proper log package
