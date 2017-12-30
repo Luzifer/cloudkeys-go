@@ -93,10 +93,10 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
 
 ## Install on Google App Engine
 
-1. Remove the vendor folder and Dockerfile, and get the current libraries
+1. Prepare the repository for GAE environment and get the current libraries
 
     ```
-    $ rm -r vendor && rm Dockerfile && go get -v -u ./...
+    $ make prepare-gae-deploy && go get -v -u ./...
     ```
 
 2. Create app.yaml and set the correct settings
