@@ -27,6 +27,6 @@ publish:
 	bash golang.sh
 
 prepare-gae-deploy:
-	rm -rf Dockerfile venvor
+	rm -rf Dockerfile vendor
 
 .PHONY: bindata.go
