@@ -1,16 +1,17 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/sessions"
 )
 
-func overviewHandler(res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
-	user, _ := checkLogin(r, session)
+func overviewHandler(c context.Context, res http.ResponseWriter, r *http.Request, session *sessions.Session, ctx *pongo2.Context) (*string, error) {
+	user, _ := checkLogin(c, r, session)
 
-	if user == nil || !storage.IsPresent(user.UserFile) {
+	if user == nil || !storage.IsPresent(c, user.UserFile) {
 		http.Redirect(res, r, "../../login", http.StatusFound)
 		return nil, nil
 	}

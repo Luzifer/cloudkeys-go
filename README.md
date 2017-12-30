@@ -90,3 +90,22 @@ Example: redis+tcp://auth:mypass@redis.example.com:6379/5?prefix=cloudkeys::
     ```
 
 3. Set your configuration variables in the Heroku apps dashboard (see env variables in usage section above)
+
+## Install on Google App Engine
+
+1. Prepare the repository for GAE environment and get the current libraries
+
+    ```
+    $ make prepare-gae-deploy && go get -v -u ./...
+    ```
+
+2. Create app.yaml and set the correct settings
+    ```
+    $ copy app.yaml.example app.yaml
+    ```
+
+3. Deploy on App Engine
+
+    ```
+    $ appcfg.py update .
+    ```

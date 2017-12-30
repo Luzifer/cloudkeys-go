@@ -1,0 +1,18 @@
+application: yourapplication
+version: 2
+runtime: go1
+api_version: go1
+
+handlers:
+- url: /.*
+  script: _go_app
+
+env_variables:
+  passwordSalt: "YourPasswordSalt"
+  usernameSalt: "YourUsernameSalt"
+  storage: "s3://yourBucket/"
+  authkey: "YourAuthKey"
+  encryptkey: "YourEncryptKey"
+  AWS_ACCESS_KEY: "YourAccessKey"
+  AWS_SECRET_ACCESS_KEY: "YourSecretAccessKey"
+  AWS_REGION: "us-east-1"

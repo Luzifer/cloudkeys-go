@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"io/ioutil"
 	"net/url"
@@ -38,7 +39,7 @@ func newRedisStorage(u *url.URL) (storageAdapter, error) {
 }
 
 // Write store the data of a dataObject into the storage
-func (r *RedisStorage) Write(identifier string, data io.Reader) error {
+func (r *RedisStorage) Write(ctx context.Context, identifier string, data io.Reader) error {
 	d, err := ioutil.ReadAll(data)
 	if err != nil {
 		return err
@@ -48,13 +49,13 @@ func (r *RedisStorage) Write(identifier string, data io.Reader) error {
 }
 
 // Read reads the data of a dataObject from the storage
-func (r *RedisStorage) Read(identifier string) (io.Reader, error) {
+func (r *RedisStorage) Read(ctx context.Context, identifier string) (io.Reader, error) {
 	content, err := r.conn.Get(r.prefix + identifier)
 	return bytes.NewReader(content), err
 }
 
 // IsPresent checks for the presence of an userfile identifier
-func (r *RedisStorage) IsPresent(identifier string) bool {
+func (r *RedisStorage) IsPresent(ctx context.Context, identifier string) bool {
 	e, err := r.conn.Exists(r.prefix + identifier)
 	if err != nil {
 		log.WithError(err).WithFields(log.Fields{
@@ -66,12 +67,12 @@ func (r *RedisStorage) IsPresent(identifier string) bool {
 }
 
 // Backup creates a backup of the old data
-func (r *RedisStorage) Backup(identifier string) error {
+func (r *RedisStorage) Backup(ctx context.Context, identifier string) error {
 	ts := strconv.FormatInt(time.Now().Unix(), 10)
-	data, err := r.Read(identifier)
+	data, err := r.Read(ctx, identifier)
 	if err != nil {
 		return err
 	}
 
-	return r.Write(identifier+":backup:"+ts, data)
+	return r.Write(ctx, identifier+":backup:"+ts, data)
 }
