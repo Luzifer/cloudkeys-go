@@ -1,8 +1,6 @@
 // +build !appengine
 
-package main // import "github.com/Luzifer/cloudkeys-go"
-
-//go:generate go-bindata assets
+package main
 
 import (
 	"context"

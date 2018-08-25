@@ -2,25 +2,21 @@ VERSION = $(shell git describe --tags)
 
 default: build
 
-build: $(GOPATH)/bin/godep bindata.go
-	$(GOPATH)/bin/godep go build -ldflags "-X main.version=$(VERSION)" .
-
-pre-commit: bindata.go
+build: bindata.go
+	go build -ldflags "-X main.version=$(VERSION)" .
 
 container: bindata.go
 	docker build .
 
-gen_css:
-	lessc --verbose -x less/*.less assets/style.css
+build_vue:
+	docker run --rm -i \
+		-v "$(CURDIR):/src" \
+		-w "/src" \
+		node:10-alpine \
+		sh -exc "npm ci && npm run build && chown -R $(shell id -u):$(shell id -g) ."
 
-gen_js:
-	coffee --compile -o assets coffee/*.coffee
-
-bindata.go: gen_css gen_js
-	go generate
-
-$(GOPATH)/bin/godep:
-	go get github.com/tools/godep
+bindata.go: build_vue
+	go-bindata -o bindata.go assets/...
 
 publish:
 	curl -sSLo golang.sh https://raw.githubusercontent.com/Luzifer/github-publish/master/golang.sh
