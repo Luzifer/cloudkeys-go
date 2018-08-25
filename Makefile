@@ -16,7 +16,7 @@ build_vue:
 		sh -exc "npm ci && npm run build && chown -R $(shell id -u):$(shell id -g) ."
 
 bindata.go: build_vue
-	go-bindata -o bindata.go assets/...
+	go-bindata -o bindata.go assets/... dist/...
 
 publish:
 	curl -sSLo golang.sh https://raw.githubusercontent.com/Luzifer/github-publish/master/golang.sh
