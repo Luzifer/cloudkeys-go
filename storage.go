@@ -17,6 +17,7 @@ type storageAdapter interface {
 	IsPresent(ctx context.Context, identifier string) bool
 	Backup(ctx context.Context, identifier string) error
 }
+
 type storageAdapterInitializer func(*url.URL) (storageAdapter, error)
 
 func getStorageAdapter(cfg *config) (storageAdapter, error) {

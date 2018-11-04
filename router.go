@@ -8,36 +8,23 @@ import (
 
 func router() *mux.Router {
 	r := mux.NewRouter()
-	r.PathPrefix("/assets/").HandlerFunc(serveAssets)
+	r.PathPrefix("/assets/").HandlerFunc(gzipFunc(serveAssets))
 
-	r.HandleFunc("/register", httpHelper(simpleTemplateOutput("register.html"))).
-		Methods("GET")
-	r.HandleFunc("/register", httpHelper(registerHandler)).
-		Methods("POST")
-
-	r.HandleFunc("/login", httpHelper(simpleTemplateOutput("login.html"))).
-		Methods("GET")
-	r.HandleFunc("/login", httpHelper(loginHandler)).
-		Methods("POST")
-
-	r.HandleFunc("/logout", httpHelper(logoutHandler)).
-		Methods("GET")
-
-	r.HandleFunc("/u/{userIndex:[0-9]+}/overview", httpHelper(overviewHandler)).
-		Methods("GET")
-
-	r.HandleFunc("/u/{userIndex:[0-9]+}/ajax", httpHelper(ajaxGetHandler)).
-		Methods("GET")
-	r.HandleFunc("/u/{userIndex:[0-9]+}/ajax", httpHelper(ajaxPostHandler)).
-		Methods("POST")
-
-	/* --- SUPPORT FOR DEPRECATED METHODS --- */
-	r.HandleFunc("/", func(res http.ResponseWriter, r *http.Request) {
-		http.Redirect(res, r, "u/0/overview", http.StatusFound)
-	}).Methods("GET")
-	r.HandleFunc("/overview", func(res http.ResponseWriter, r *http.Request) {
-		http.Redirect(res, r, "u/0/overview", http.StatusFound)
-	}).Methods("GET")
+	registerAPIv2(r.PathPrefix("/v2").Subrouter())
 
 	return r
+}
+
+func registerAPIv2(r *mux.Router) {
+	r.HandleFunc("/login", apiHelper(apiLogin)).Methods(http.MethodPost)
+	r.HandleFunc("/register", apiHelper(apiRegister)).Methods(http.MethodPost)
+	r.HandleFunc("/users", apiHelper(apiListUsers)).Methods(http.MethodGet)
+
+	r.HandleFunc("/user/{user}/data", apiHelper(apiGetUserData)).Methods(http.MethodGet)
+	r.HandleFunc("/user/{user}/data", apiHelper(apiSetUserData)).Methods(http.MethodPut)
+	r.HandleFunc("/user/{user}/logout", apiHelper(apiLogoutUser)).Methods(http.MethodPost)
+	r.HandleFunc("/user/{user}/settings", apiHelper(apiGetUserSettings)).Methods(http.MethodGet)
+	r.HandleFunc("/user/{user}/settings", apiHelper(apiSetUserSettings)).Methods(http.MethodPatch)
+	r.HandleFunc("/user/{user}/password", apiHelper(apiChangeLoginPassword)).Methods(http.MethodPut)
+	r.HandleFunc("/user/{user}/validate-mfa", apiHelper(apiValidateMFA)).Methods(http.MethodPost)
 }
