@@ -8,7 +8,7 @@ import (
 
 func router() *mux.Router {
 	r := mux.NewRouter()
-	r.PathPrefix("/assets/").HandlerFunc(gzipFunc(serveAssets))
+	r.PathPrefix("/").HandlerFunc(gzipFunc(serveAssets))
 
 	registerAPIv2(r.PathPrefix("/v2").Subrouter())
 

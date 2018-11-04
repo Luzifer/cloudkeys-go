@@ -3,11 +3,12 @@ package main
 import (
 	"mime"
 	"net/http"
+	"path"
 	"path/filepath"
 )
 
 func serveAssets(res http.ResponseWriter, r *http.Request) {
-	data, err := Asset(r.RequestURI[1:])
+	data, err := Asset(path.Join("dist", r.RequestURI[1:]))
 	if err != nil {
 		http.Error(res, "Not found", http.StatusNotFound)
 		return
