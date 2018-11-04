@@ -8,15 +8,24 @@ build: bindata.go
 container: bindata.go
 	docker build .
 
+vue_dev:
+	docker run --rm -i \
+		-v "$(CURDIR):/src" \
+		-w "/src" -u $(shell id -u) \
+		-p 8080:8080 \
+		node:10-alpine \
+		sh -exc "npm ci && npm run serve"
+
 build_vue:
 	docker run --rm -i \
 		-v "$(CURDIR):/src" \
 		-w "/src" \
 		node:10-alpine \
-		sh -exc "npm ci && npm run build && chown -R $(shell id -u):$(shell id -g) ."
+		sh -exc "npm ci && npm run build"
 
+.PHONY: bindata.go
 bindata.go: build_vue
-	go-bindata -o bindata.go assets/... dist/...
+	go-bindata -o bindata.go dist/...
 
 publish:
 	curl -sSLo golang.sh https://raw.githubusercontent.com/Luzifer/github-publish/master/golang.sh
@@ -25,4 +34,10 @@ publish:
 prepare-gae-deploy:
 	rm -rf Dockerfile vendor
 
-.PHONY: bindata.go
+.PHONY: public/wasm_exec.js
+public/wasm_exec.js:
+	curl -sSfLo public/wasm_exec.js "https://raw.githubusercontent.com/golang/go/go1.11/misc/wasm/wasm_exec.js"
+
+.PHONY: public/cryptocore.wasm
+public/cryptocore.wasm:
+	GOOS=js GOARCH=wasm go build -o public/cryptocore.wasm ./cryptocore
