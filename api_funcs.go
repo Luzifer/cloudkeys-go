@@ -34,7 +34,7 @@ func apiChangeLoginPassword(ctx context.Context, res http.ResponseWriter, r *htt
 		username = mux.Vars(r)["user"]
 	)
 
-	if err := json.NewDecoder(r.Body).Decode(input); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, http.StatusBadRequest, wrapAPIError(err, "Unable to decode login data")
 	}
 
@@ -132,7 +132,7 @@ func apiLogin(ctx context.Context, res http.ResponseWriter, r *http.Request, ses
 		output = map[string]interface{}{"success": true}
 	)
 
-	if err := json.NewDecoder(r.Body).Decode(input); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, http.StatusBadRequest, wrapAPIError(err, "Unable to decode login data")
 	}
 
@@ -212,7 +212,7 @@ func apiRegister(ctx context.Context, res http.ResponseWriter, r *http.Request, 
 		output = map[string]interface{}{"success": true}
 	)
 
-	if err := json.NewDecoder(r.Body).Decode(input); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, http.StatusBadRequest, wrapAPIError(err, "Unable to decode request")
 	}
 
@@ -240,6 +240,9 @@ func apiRegister(ctx context.Context, res http.ResponseWriter, r *http.Request, 
 		return nil, http.StatusInternalServerError, wrapAPIError(err, "Could not write data file")
 	}
 
+	// Log-in the newly created user
+	sess.Users[input.Username] = userStateLoggedin
+
 	return output, http.StatusOK, nil
 }
 
@@ -259,7 +262,7 @@ func apiSetUserData(ctx context.Context, res http.ResponseWriter, r *http.Reques
 		username = mux.Vars(r)["user"]
 	)
 
-	if err := json.NewDecoder(r.Body).Decode(input); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, http.StatusBadRequest, wrapAPIError(err, "Unable to decode request")
 	}
 
@@ -315,7 +318,7 @@ func apiValidateMFA(ctx context.Context, res http.ResponseWriter, r *http.Reques
 		user   = mux.Vars(r)["user"]
 	)
 
-	if err := json.NewDecoder(r.Body).Decode(input); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return nil, http.StatusBadRequest, wrapAPIError(err, "Unable to decode login data")
 	}
 
