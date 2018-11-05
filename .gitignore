@@ -1,5 +1,5 @@
 cloudkeys-go
 data
 dist
-.env
+.env*
 node_modules
