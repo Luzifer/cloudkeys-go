@@ -7,10 +7,11 @@ import (
 
 var _ = Describe("Testing slices", func() {
 	type t struct {
-		Int     []int    `default:"1,2,3" flag:"int"`
-		String  []string `default:"a,b,c" flag:"string"`
-		IntP    []int    `default:"1,2,3" flag:"intp,i"`
-		StringP []string `default:"a,b,c" flag:"stringp,s"`
+		Int         []int    `default:"1,2,3" flag:"int"`
+		String      []string `default:"a,b,c" flag:"string"`
+		IntP        []int    `default:"1,2,3" flag:"intp,i"`
+		StringP     []string `default:"a,b,c" flag:"stringp,s"`
+		EmptyString []string `default:""`
 	}
 
 	var (
@@ -47,5 +48,8 @@ var _ = Describe("Testing slices", func() {
 	It("should have the expected values for string-shorthand-slice", func() {
 		Expect(len(cfg.StringP)).To(Equal(2))
 		Expect(cfg.StringP).To(Equal([]string{"hallo", "welt"}))
+	})
+	It("should have no elements for an empty default string", func() {
+		Expect(len(cfg.EmptyString)).To(Equal(0))
 	})
 })

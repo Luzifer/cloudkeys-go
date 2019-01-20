@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/Luzifer/rconfig.svg?branch=master)](https://travis-ci.org/Luzifer/rconfig)
-[![License: Apache v2.0](https://badge.luzifer.io/v1/badge?color=5d79b5&title=license&text=Apache+v2.0)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Documentation](https://badge.luzifer.io/v1/badge?title=godoc&text=reference)](https://godoc.org/github.com/Luzifer/rconfig)
-[![Go Report](http://goreportcard.com/badge/Luzifer/rconfig)](http://goreportcard.com/report/Luzifer/rconfig)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Luzifer/rconfig)](https://goreportcard.com/report/github.com/Luzifer/rconfig)
+[![Documentation](https://badges.fyi/static/godoc/reference/5272B4)](https://godoc.org/github.com/Luzifer/rconfig)
+![](https://badges.fyi/github/license/Luzifer/rconfig)
+[![](https://badges.fyi/github/latest-tag/Luzifer/rconfig)](https://gopkg.in/Luzifer/rconfig.v2)
 
 ## Description
 
@@ -18,7 +19,7 @@ go get -u github.com/Luzifer/rconfig
 OR fetch a specific version:
 
 ```
-go get -u gopkg.in/luzifer/rconfig.v1
+go get -u gopkg.in/luzifer/rconfig.v2
 ```
 
 Run tests by running:
