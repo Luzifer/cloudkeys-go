@@ -1,3 +1,7 @@
+# 1.10.0 / 2019-01-21
+
+  * JS bugfixes (#18)
+
 # 1.9.0 / 2017-12-30
 
   * Add support for deployments on Google AppEngine (Thanks [mthie](https://github.com/mthie))
