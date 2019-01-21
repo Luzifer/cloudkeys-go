@@ -18,7 +18,6 @@ class CloudKeys
         $('#passwordRequest').addClass('hide')
 
         $('#search').keyup =>
-          `var that = this`
           @limitItems(@getItems($('#search').val()))
           return
         $('#search').focus()
@@ -197,7 +196,6 @@ class CloudKeys
       c.append(ul)
 
       c.click (e) =>
-        `var that = this`
         elem = $(e.currentTarget)
         if elem.hasClass('active') is false
           $('#items li.active').removeClass('active').find('ul').slideUp()

@@ -21,7 +21,6 @@
           });
           $('#passwordRequest').addClass('hide');
           $('#search').keyup(() => {
-            var that = this;
             this.limitItems(this.getItems($('#search').val()));
           });
           $('#search').focus();
@@ -242,7 +241,6 @@
         });
         c.append(ul);
         c.click((e) => {
-          var that = this;
           var elem;
           elem = $(e.currentTarget);
           if (elem.hasClass('active') === false) {
