@@ -6,7 +6,6 @@ class CloudKeys
     @version = ""
     @password = '' #todo replace with user password
     $('#pw').focus().keyup (evt) =>
-      `var that = this`
       if evt.keyCode is 13
         @password = $('#pw').val()
         $('#loader').removeClass('hide')

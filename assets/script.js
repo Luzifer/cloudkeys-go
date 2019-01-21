@@ -9,7 +9,6 @@
       this.version = "";
       this.password = ''; //todo replace with user password
       $('#pw').focus().keyup((evt) => {
-        var that = this;
         if (evt.keyCode === 13) {
           this.password = $('#pw').val();
           $('#loader').removeClass('hide');
