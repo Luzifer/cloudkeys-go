@@ -12,6 +12,8 @@ const (
 
 	// ErrCodeEC2AccessDeniedException for service response error code
 	// "EC2AccessDeniedException".
+	//
+	// Need additional permissions to configure VPC settings.
 	ErrCodeEC2AccessDeniedException = "EC2AccessDeniedException"
 
 	// ErrCodeEC2ThrottledException for service response error code
@@ -72,7 +74,7 @@ const (
 	// ErrCodeInvalidZipFileException for service response error code
 	// "InvalidZipFileException".
 	//
-	// AWS Lambda could not unzip the function zip file.
+	// AWS Lambda could not unzip the deployment package.
 	ErrCodeInvalidZipFileException = "InvalidZipFileException"
 
 	// ErrCodeKMSAccessDeniedException for service response error code
@@ -109,6 +111,14 @@ const (
 	// Lambda function access policy is limited to 20 KB.
 	ErrCodePolicyLengthExceededException = "PolicyLengthExceededException"
 
+	// ErrCodePreconditionFailedException for service response error code
+	// "PreconditionFailedException".
+	//
+	// The RevisionId provided does not match the latest RevisionId for the Lambda
+	// function or alias. Call the GetFunction or the GetAlias API to retrieve the
+	// latest RevisionId for your resource.
+	ErrCodePreconditionFailedException = "PreconditionFailedException"
+
 	// ErrCodeRequestTooLargeException for service response error code
 	// "RequestTooLargeException".
 	//
@@ -121,6 +131,14 @@ const (
 	//
 	// The resource already exists.
 	ErrCodeResourceConflictException = "ResourceConflictException"
+
+	// ErrCodeResourceInUseException for service response error code
+	// "ResourceInUseException".
+	//
+	// The operation conflicts with the resource's availability. For example, you
+	// attempted to update an EventSource Mapping in CREATING, or tried to delete
+	// a EventSource mapping currently in the UPDATING state.
+	ErrCodeResourceInUseException = "ResourceInUseException"
 
 	// ErrCodeResourceNotFoundException for service response error code
 	// "ResourceNotFoundException".
@@ -145,14 +163,7 @@ const (
 	// ErrCodeTooManyRequestsException for service response error code
 	// "TooManyRequestsException".
 	//
-	// You will get this exception for the following reasons. ConcurrentInvocationLimitExceeded
-	// is returned if you have no functions with reserved-concurrency and have exceeded
-	// your account concurrent limit or if a function without reserved concurrency
-	// exceeds the account's unreserved concurrency limit. ReservedFunctionConcurrentInvocationLimitExceeded
-	// is returned when a function with reserved concurrency exceeds its configured
-	// concurrent limit. CallerRateLimitExceeded is returned when your account limit
-	// is exceeded and you have not reserved concurrency on any function. For more
-	// information, see concurrent-executions
+	// Request throughput limit exceeded.
 	ErrCodeTooManyRequestsException = "TooManyRequestsException"
 
 	// ErrCodeUnsupportedMediaTypeException for service response error code

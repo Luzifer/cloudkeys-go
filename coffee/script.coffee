@@ -6,9 +6,8 @@ class CloudKeys
     @version = ""
     @password = '' #todo replace with user password
     $('#pw').focus().keyup (evt) =>
-      `var that = this`
       if evt.keyCode is 13
-        @password = $(that).val()
+        @password = $('#pw').val()
         $('#loader').removeClass('hide')
         @fetchData()
         $('#newEntityLink').click =>
@@ -19,8 +18,7 @@ class CloudKeys
         $('#passwordRequest').addClass('hide')
 
         $('#search').keyup =>
-          `var that = this`
-          @limitItems(@getItems($(that).val()))
+          @limitItems(@getItems($('#search').val()))
           return
         $('#search').focus()
         $(window).keyup (evt) =>
@@ -183,23 +181,22 @@ class CloudKeys
       @getClipboardCode(item.tags).insertBefore(field.find("br"))
 
       ul.append("<li class=\"last\"><button class=\"btn btn-primary\">Edit</button><br></li>")
-      ul.find('.btn-primary').click () =>
-        `var t = this`
+      ul.find('.btn-primary').click (e) =>
+        `var t = e.currentTarget`
         num = $(t).parent().parent().parent().data('num')
         if typeof num isnt "undefined" and typeof num isnt null
           @showForm(num)
 
-      ul.find('.passwordtoggle em').click () =>
-        `var t = this`
+      ul.find('.passwordtoggle em').click (e) =>
+        `var t = e.currentTarget`
         elem = $(t).parent().find('.password')
         original = elem.data('toggle')
         elem.data('toggle', elem.val())
         elem.val(original)
       c.append(ul)
 
-      c.click =>
-        `var that = this`
-        elem = $(that)
+      c.click (e) =>
+        elem = $(e.currentTarget)
         if elem.hasClass('active') is false
           $('#items li.active').removeClass('active').find('ul').slideUp()
           elem.addClass('active')
