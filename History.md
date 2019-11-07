@@ -1,3 +1,7 @@
+# 1.11.1 / 2019-11-07
+
+  * Fix: Ensure templates are available inside docker container
+
 # 1.11.0 / 2019-11-07
 
   * Show tooltip when copying to clipboard (#19) (Thanks [steffbo](https://github.com/steffbo))
