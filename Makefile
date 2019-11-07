@@ -5,6 +5,15 @@ default: build
 build: bindata.go
 	go build -ldflags "-X main.version=$(VERSION)" -mod=readonly .
 
+build_docker:
+	docker build -t registry.local/cloudkeys-go-build -f Dockerfile.build .
+	docker run --rm -i \
+		-e "CGO_ENABLED=0" \
+		-v "$(CURDIR):$(CURDIR)" \
+		-w "$(CURDIR)" \
+		registry.local/cloudkeys-go-build \
+		make build
+
 pre-commit: bindata.go
 
 container: bindata.go

@@ -1,0 +1,19 @@
+FROM golang:alpine
+
+RUN set -ex \
+ && apk update \
+ && apk add \
+      git \
+      make \
+      nodejs \
+      npm
+
+RUN set -ex \
+ && npm install --global \
+      coffeescript \
+      less
+
+RUN set -ex \
+ && cd /go \
+ && go get -u \
+      github.com/shuLhan/go-bindata/...
