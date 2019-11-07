@@ -1,3 +1,8 @@
+# 1.11.0 / 2019-11-07
+
+  * Show tooltip when copying to clipboard (#19) (Thanks [steffbo](https://github.com/steffbo))
+  * Switch to Go 1.12+ modules (#20)
+
 # 1.10.0 / 2019-01-21
 
   * JS bugfixes (#18)
