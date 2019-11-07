@@ -2,7 +2,7 @@
 
 package main
 
-import "github.com/Luzifer/rconfig"
+import "github.com/Luzifer/rconfig/v2"
 
 func loadConfig() *config {
 	cfg := &config{}

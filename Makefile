@@ -2,8 +2,17 @@ VERSION = $(shell git describe --tags)
 
 default: build
 
-build: $(GOPATH)/bin/godep bindata.go
-	$(GOPATH)/bin/godep go build -ldflags "-X main.version=$(VERSION)" .
+build: bindata.go
+	go build -ldflags "-X main.version=$(VERSION)" -mod=readonly .
+
+build_docker:
+	docker build -t registry.local/cloudkeys-go-build -f Dockerfile.build .
+	docker run --rm -i \
+		-e "CGO_ENABLED=0" \
+		-v "$(CURDIR):$(CURDIR)" \
+		-w "$(CURDIR)" \
+		registry.local/cloudkeys-go-build \
+		make build
 
 pre-commit: bindata.go
 
@@ -18,9 +27,6 @@ gen_js:
 
 bindata.go: gen_css gen_js
 	go generate
-
-$(GOPATH)/bin/godep:
-	go get github.com/tools/godep
 
 publish:
 	curl -sSLo golang.sh https://raw.githubusercontent.com/Luzifer/github-publish/master/golang.sh

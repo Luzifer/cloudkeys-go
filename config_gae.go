@@ -5,7 +5,7 @@ package main
 import (
 	"os"
 
-	"github.com/Luzifer/rconfig"
+	"github.com/Luzifer/rconfig/v2"
 )
 
 func loadConfig() *config {
