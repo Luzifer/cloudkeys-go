@@ -104,7 +104,7 @@ class CloudKeys
     return CryptoJS.AES.decrypt(value, @password).toString(CryptoJS.enc.Utf8)
 
   getClipboardCode: (value) ->
-    cb = $('<div class="clipboard"></div>')
+    cb = $('<div class="clipboard" data-toggle="tooltip" data-original-title="Copied to clipboard!" data-trigger="manual"/>')
     cb.click (e) ->
       elem = $("<textarea>#{ value }</textarea>").css({
         'position': 'absolute',
@@ -118,6 +118,12 @@ class CloudKeys
       elem.select()
       document.execCommand('copy')
       elem.remove()
+
+      t = $(this)
+      t.tooltip('show')
+      setTimeout ->
+        t.tooltip('hide')
+      , 1000
       return
     return cb
 
