@@ -17,10 +17,13 @@ RUN set -ex \
  && apk --no-cache add \
       ca-certificates
 
-COPY --from=builder /go/bin/cloudkeys-go /usr/local/bin/cloudkeys-go
+COPY --from=builder /go/bin/cloudkeys-go                              /usr/local/bin/cloudkeys-go
+COPY --from=builder /go/src/github.com/Luzifer/cloudkeys-go/templates /usr/local/share/cloudkeys/templates
 
 EXPOSE 3000
 VOLUME ["/data"]
+
+WORKDIR /usr/local/share/cloudkeys
 
 ENTRYPOINT ["/usr/local/bin/cloudkeys-go"]
 CMD ["--"]
