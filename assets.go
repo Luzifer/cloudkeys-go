@@ -8,7 +8,12 @@ import (
 )
 
 func serveAssets(res http.ResponseWriter, r *http.Request) {
-	data, err := Asset(path.Join("dist", r.RequestURI[1:]))
+	var fileName = r.RequestURI[1:]
+	if fileName == "" {
+		fileName = "index.html"
+	}
+
+	data, err := Asset(path.Join("dist", fileName))
 	if err != nil {
 		http.Error(res, "Not found", http.StatusNotFound)
 		return
