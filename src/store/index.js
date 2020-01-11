@@ -7,40 +7,6 @@ import uuidv4 from 'uuid/v4'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    /*
-     *account_info: {
-     *    data: [{
-     *            "title": "Test entry",
-     *            "username": "testuser",
-     *            "password": "quitesecretpass",
-     *            "url": "https://example.com",
-     *            "comment": "",
-     *            "tags": "",
-     *            "id": "f106cdd5-7b52-4c51-a386-6f2016ee70c8",
-     *        },
-     *        {
-     *            "title": "Test entry 2",
-     *            "username": "testuser",
-     *            "password": "quitesecretpass",
-     *            "url": "https://example.com",
-     *            "comment": "",
-     *            "tags": "foobar",
-     *            "id": "e956814f-c7dd-4730-b383-624f8bbc6923",
-     *        },
-     *    ],
-     *    data_raw: "",
-     *    loaded: "Luzifer",
-     *    master_password: "foobar",
-     *    selected: null,
-     *},
-     *accounts: ["Luzifer"],
-     */
-    account_info: {},
-    accounts: [],
-    cryptocore_available: false,
-    filter: null,
-  },
   actions: {
 
     add_entry(context, entry) {
@@ -51,7 +17,7 @@ export default new Vuex.Store({
 
     decrypt_data(context) {
       // Do not try to decrypt empty data
-      if (context.state.account_info.data_raw == '') {
+      if (context.state.account_info.data_raw === '') {
         return
       }
 
@@ -113,7 +79,7 @@ export default new Vuex.Store({
 
     register(context, data) {
       axios.post('/register', data)
-        .then(response => {
+        .then(() => {
           context.dispatch('reload_users', data.username)
         })
         .catch(error => console.log(error))
@@ -125,7 +91,7 @@ export default new Vuex.Store({
           const users = []
           for (const user in response.data) {
             const login_state = response.data[user]
-            if (login_state == 'logged-in') {
+            if (login_state === 'logged-in') {
               users.push(user)
             }
           }
@@ -151,9 +117,9 @@ export default new Vuex.Store({
       }).then(checksum => {
         axios.put(`/user/${context.state.account_info.loaded}/data`, {
           checksum,
-          old_checksum: context.state.account_info.checksum,
           data: context.state.account_info.data_raw,
-        }).then(response => {
+          old_checksum: context.state.account_info.checksum,
+        }).then(() => {
           context.commit('update_checksum', checksum)
         })
           .catch(error => console.log(error))
@@ -164,7 +130,7 @@ export default new Vuex.Store({
     sign_in(context, auth) {
       console.log(auth)
       axios.post('/login', auth)
-        .then(response => {
+        .then(() => {
           context.dispatch('reload_users', auth.username)
         })
         .catch(error => {
@@ -178,12 +144,13 @@ export default new Vuex.Store({
 
     sign_out(context) {
       axios.post(`/user/${context.state.account_info.loaded}/logout`)
-        .then(response => {
+        .then(() => {
           context.dispatch('reload_users')
         })
         .catch(error => console.log(error))
     },
   },
+
   getters: {
     filtered_entries: state => {
       if (state.filter === '' || state.filter === null) {
@@ -214,13 +181,14 @@ export default new Vuex.Store({
         return null
       }
       for (const item of state.account_info.data) {
-        if (item.id == state.account_info.selected) {
+        if (item.id === state.account_info.selected) {
           return item
         }
       }
       return null
     },
   },
+
   mutations: {
     account_loaded(state, account_info) {
       state.account_info = account_info
@@ -278,5 +246,40 @@ export default new Vuex.Store({
     update_filter(state, value) {
       state.filter = value
     },
+  },
+
+  state: {
+    /*
+     *account_info: {
+     *    data: [{
+     *            "title": "Test entry",
+     *            "username": "testuser",
+     *            "password": "quitesecretpass",
+     *            "url": "https://example.com",
+     *            "comment": "",
+     *            "tags": "",
+     *            "id": "f106cdd5-7b52-4c51-a386-6f2016ee70c8",
+     *        },
+     *        {
+     *            "title": "Test entry 2",
+     *            "username": "testuser",
+     *            "password": "quitesecretpass",
+     *            "url": "https://example.com",
+     *            "comment": "",
+     *            "tags": "foobar",
+     *            "id": "e956814f-c7dd-4730-b383-624f8bbc6923",
+     *        },
+     *    ],
+     *    data_raw: "",
+     *    loaded: "Luzifer",
+     *    master_password: "foobar",
+     *    selected: null,
+     *},
+     *accounts: ["Luzifer"],
+     */
+    account_info: {},
+    accounts: [],
+    cryptocore_available: false,
+    filter: null,
   },
 })

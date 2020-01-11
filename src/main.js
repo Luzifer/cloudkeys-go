@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import VueClipboard from 'vue-clipboard2'
 import VueShortkey from 'vue-shortkey'
 
@@ -39,10 +39,10 @@ const go = new Go()
 WebAssembly.instantiateStreaming(fetch('cryptocore.wasm'), go.importObject)
   .then(async obj => await go.run(obj.instance))
 
-const instance = new Vue({
-  store,
-  render: h => h(App),
+window.instance = new Vue({
   mounted: () => store.dispatch('reload_users'),
+  render: h => h(App),
+  store,
 }).$mount('#app')
 
 // Wait for the cryptocore to be loaded (which makes encryption available)

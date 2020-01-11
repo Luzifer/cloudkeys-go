@@ -37,6 +37,13 @@ lint-fix:
 		node:10-alpine \
 		sh -exc "apk add python && npm ci && npx eslint --fix src"
 
+lint-watch:
+	docker run --rm -i \
+		-v "$(CURDIR):/src" \
+		-w "/src" \
+		node:10-alpine \
+		sh -exc "apk add python && npm ci && while true; do npx eslint src || true; sleep 5; done"
+
 .PHONY: bindata.go
 bindata.go: build_vue
 	go-bindata -o bindata.go dist/...

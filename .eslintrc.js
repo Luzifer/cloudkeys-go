@@ -1,14 +1,14 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
-  'root': true,
-  'parserOptions': {
+  root: true,
+  parserOptions: {
     parser: 'babel-eslint',
   },
-  'env': {
+  env: {
     browser: true,
   },
-  'extends': [
+  extends: [
     /*
      * https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
      * consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
@@ -18,12 +18,13 @@ module.exports = {
     'eslint:recommended',
   ],
   // required to lint *.vue files
-  'plugins': ['vue'],
-  'globals': {
+  plugins: ['vue'],
+  globals: {
+    Go: true,
     process: true,
   },
   // add your custom rules here
-  'rules': {
+  rules: {
     'array-bracket-newline': ['error', { multiline: true }],
     'array-bracket-spacing': ['error'],
     'arrow-body-style': ['error', 'as-needed'],
@@ -38,7 +39,7 @@ module.exports = {
     'dot-location': ['error', 'property'],
     'dot-notation': ['error'],
     'eol-last': ['error', 'always'],
-    'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
+    'eqeqeq': ['error', 'always', { null: 'ignore' }],
     'func-call-spacing': ['error', 'never'],
     'function-paren-newline': ['error', 'multiline'],
     'generator-star-spacing': ['off'], // allow async-await
@@ -73,11 +74,6 @@ module.exports = {
     'quote-props': ['error', 'consistent-as-needed', { keywords: false }],
     'quotes': ['error', 'single', { allowTemplateLiterals: true }],
     'semi': ['error', 'never'],
-    'sort-imports': ['error', {
-      ignoreCase: true,
-      ignoreDeclarationSort: false,
-      ignoreMemberSort: false,
-    }],
     'sort-keys': ['error', 'asc', { caseSensitive: true, natural: false }],
     'space-before-blocks': ['error', 'always'],
     'spaced-comment': ['warn', 'always'],
