@@ -14,14 +14,28 @@ vue_dev:
 		-w "/src" -u $(shell id -u) \
 		-p 8080:8080 \
 		node:10-alpine \
-		sh -exc "npm ci && npm run serve"
+		sh -exc "apk add python && npm ci && npm run serve"
 
 build_vue:
 	docker run --rm -i \
 		-v "$(CURDIR):/src" \
 		-w "/src" \
 		node:10-alpine \
-		sh -exc "npm ci && npm run build"
+		sh -exc "apk add python && npm ci && npm run build"
+
+lint:
+	docker run --rm -i \
+		-v "$(CURDIR):/src" \
+		-w "/src" \
+		node:10-alpine \
+		sh -exc "apk add python && npm ci && npx eslint src"
+
+lint-fix:
+	docker run --rm -i \
+		-v "$(CURDIR):/src" \
+		-w "/src" \
+		node:10-alpine \
+		sh -exc "apk add python && npm ci && npx eslint --fix src"
 
 .PHONY: bindata.go
 bindata.go: build_vue
