@@ -8,32 +8,34 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    //account_info: {
-    //    data: [{
-    //            "title": "Test entry",
-    //            "username": "testuser",
-    //            "password": "quitesecretpass",
-    //            "url": "https://example.com",
-    //            "comment": "",
-    //            "tags": "",
-    //            "id": "f106cdd5-7b52-4c51-a386-6f2016ee70c8",
-    //        },
-    //        {
-    //            "title": "Test entry 2",
-    //            "username": "testuser",
-    //            "password": "quitesecretpass",
-    //            "url": "https://example.com",
-    //            "comment": "",
-    //            "tags": "foobar",
-    //            "id": "e956814f-c7dd-4730-b383-624f8bbc6923",
-    //        },
-    //    ],
-    //    data_raw: "",
-    //    loaded: "Luzifer",
-    //    master_password: "foobar",
-    //    selected: null,
-    //},
-    //accounts: ["Luzifer"],
+    /*
+     *account_info: {
+     *    data: [{
+     *            "title": "Test entry",
+     *            "username": "testuser",
+     *            "password": "quitesecretpass",
+     *            "url": "https://example.com",
+     *            "comment": "",
+     *            "tags": "",
+     *            "id": "f106cdd5-7b52-4c51-a386-6f2016ee70c8",
+     *        },
+     *        {
+     *            "title": "Test entry 2",
+     *            "username": "testuser",
+     *            "password": "quitesecretpass",
+     *            "url": "https://example.com",
+     *            "comment": "",
+     *            "tags": "foobar",
+     *            "id": "e956814f-c7dd-4730-b383-624f8bbc6923",
+     *        },
+     *    ],
+     *    data_raw: "",
+     *    loaded: "Luzifer",
+     *    master_password: "foobar",
+     *    selected: null,
+     *},
+     *accounts: ["Luzifer"],
+     */
     account_info: {},
     accounts: [],
     cryptocore_available: false,
@@ -49,20 +51,25 @@ export default new Vuex.Store({
 
     decrypt_data(context) {
       // Do not try to decrypt empty data
-      if (context.state.account_info.data_raw == "") return
+      if (context.state.account_info.data_raw == '') {
+        return
+      }
 
       new Promise((resolve, reject) => {
         opensslDecrypt(
           context.state.account_info.data_raw,
           context.state.account_info.master_password,
           (data, error) => {
-            if (error) reject(error)
+            if (error) {
+              reject(error)
+            }
             resolve(data)
           },
         )
-      }).then((plain_data) => {
+      }).then(plain_data => {
         context.commit('decrypted_data', plain_data)
-      }).catch((error) => console.log(error))
+      })
+        .catch(error => console.log(error))
     },
 
     encrypt_data(context) {
@@ -71,14 +78,17 @@ export default new Vuex.Store({
           JSON.stringify(context.state.account_info.data),
           context.state.account_info.master_password,
           (data, error) => {
-            if (error) reject(error)
+            if (error) {
+              reject(error)
+            }
             resolve(data)
           },
         )
-      }).then((enc_data) => {
+      }).then(enc_data => {
         context.commit('encrypted_data', enc_data)
         context.dispatch('save_user_data')
-      }).catch((error) => console.log(error))
+      })
+        .catch(error => console.log(error))
     },
 
     enter_master_password(context, password) {
@@ -88,7 +98,7 @@ export default new Vuex.Store({
 
     load_user_data(context, username) {
       axios.get(`/user/${username}/data`)
-        .then((response) => {
+        .then(response => {
           context.commit('account_loaded', {
             checksum: response.data.checksum,
             data: [],
@@ -98,23 +108,23 @@ export default new Vuex.Store({
             selected: null,
           })
         })
-        .catch((error) => console.log(error))
+        .catch(error => console.log(error))
     },
 
     register(context, data) {
-      axios.post("/register", data)
-        .then((response) => {
+      axios.post('/register', data)
+        .then(response => {
           context.dispatch('reload_users', data.username)
         })
-        .catch((error) => console.log(error))
+        .catch(error => console.log(error))
     },
 
     reload_users(context, autoload = null) {
-      axios.get("/users")
-        .then((response) => {
-          let users = []
-          for (let user in response.data) {
-            let login_state = response.data[user]
+      axios.get('/users')
+        .then(response => {
+          const users = []
+          for (const user in response.data) {
+            const login_state = response.data[user]
             if (login_state == 'logged-in') {
               users.push(user)
             }
@@ -127,34 +137,37 @@ export default new Vuex.Store({
             context.commit('clear_active_user')
           }
         })
-        .catch((error) => console.log(error))
+        .catch(error => console.log(error))
     },
 
     save_user_data(context) {
       new Promise((resolve, reject) => {
         sha256sum(context.state.account_info.data_raw, (data, error) => {
-          if (error) return reject(error)
+          if (error) {
+            return reject(error)
+          }
           resolve(data)
         })
-      }).then((checksum) => {
+      }).then(checksum => {
         axios.put(`/user/${context.state.account_info.loaded}/data`, {
-          'checksum': checksum,
-          'old_checksum': context.state.account_info.checksum,
-          'data': context.state.account_info.data_raw,
-        }).then((response) => {
+          checksum,
+          old_checksum: context.state.account_info.checksum,
+          data: context.state.account_info.data_raw,
+        }).then(response => {
           context.commit('update_checksum', checksum)
-        }).catch((error) => console.log(error))
-      }).catch((error) => console.log(error))
-
+        })
+          .catch(error => console.log(error))
+      })
+        .catch(error => console.log(error))
     },
 
     sign_in(context, auth) {
       console.log(auth)
-      axios.post("/login", auth)
-        .then((response) => {
+      axios.post('/login', auth)
+        .then(response => {
           context.dispatch('reload_users', auth.username)
         })
-        .catch((error) => {
+        .catch(error => {
           if (error.response) {
             console.log(error.response)
           } else {
@@ -165,21 +178,21 @@ export default new Vuex.Store({
 
     sign_out(context) {
       axios.post(`/user/${context.state.account_info.loaded}/logout`)
-        .then((response) => {
+        .then(response => {
           context.dispatch('reload_users')
         })
-        .catch((error) => console.log(error))
+        .catch(error => console.log(error))
     },
   },
   getters: {
-    filtered_entries: (state) => {
-      if (state.filter === "" || state.filter === null) {
+    filtered_entries: state => {
+      if (state.filter === '' || state.filter === null) {
         return state.account_info.data
       }
 
-      let entries = []
+      const entries = []
 
-      for (let item of state.account_info.data) {
+      for (const item of state.account_info.data) {
         if (item.title.indexOf(state.filter) > -1) {
           entries.push(item)
           continue
@@ -196,17 +209,17 @@ export default new Vuex.Store({
 
       return entries
     },
-    selected_entry: (state) => {
+    selected_entry: state => {
       if (!state.account_info.selected) {
         return null
       }
-      for (let item of state.account_info.data) {
+      for (const item of state.account_info.data) {
         if (item.id == state.account_info.selected) {
           return item
         }
       }
       return null
-    }
+    },
   },
   mutations: {
     account_loaded(state, account_info) {
@@ -230,10 +243,12 @@ export default new Vuex.Store({
     },
 
     decrypted_data(state, plain_data) {
-      let elms = JSON.parse(plain_data)
-      for (let e of elms) {
+      const elms = JSON.parse(plain_data)
+      for (const e of elms) {
         // Migrate old entries without UUID
-        if (!e.id) e.id = uuidv4()
+        if (!e.id) {
+          e.id = uuidv4()
+        }
         state.account_info.data.push(e)
       }
     },
@@ -263,5 +278,5 @@ export default new Vuex.Store({
     update_filter(state, value) {
       state.filter = value
     },
-  }
+  },
 })

@@ -8,13 +8,13 @@ import 'bootswatch/dist/flatly/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import {
-  library
+  library,
 } from '@fortawesome/fontawesome-svg-core'
 import {
-  fas
+  fas,
 } from '@fortawesome/free-solid-svg-icons'
 import {
-  FontAwesomeIcon
+  FontAwesomeIcon,
 } from '@fortawesome/vue-fontawesome'
 
 import axios from 'axios'
@@ -26,17 +26,17 @@ import store from './store'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueShortkey, {
-  prevent: ['input', 'textarea']
+  prevent: ['input', 'textarea'],
 })
 Vue.use(VueClipboard)
 
 library.add(fas)
 Vue.component('fa-icon', FontAwesomeIcon)
 
-axios.defaults.baseURL = "v2"
+axios.defaults.baseURL = 'v2'
 
 const go = new Go()
-WebAssembly.instantiateStreaming(fetch("cryptocore.wasm"), go.importObject)
+WebAssembly.instantiateStreaming(fetch('cryptocore.wasm'), go.importObject)
   .then(async obj => await go.run(obj.instance))
 
 const instance = new Vue({
@@ -48,9 +48,11 @@ const instance = new Vue({
 // Wait for the cryptocore to be loaded (which makes encryption available)
 new Promise(resolve => {
   (function waitForCryptocore() {
-    if (window.opensslEncrypt) return resolve()
+    if (window.opensslEncrypt) {
+      return resolve()
+    }
     setTimeout(waitForCryptocore, 100)
-  })();
+  }())
 }).then(() => {
   store.commit('cryptocore_loaded')
 })
