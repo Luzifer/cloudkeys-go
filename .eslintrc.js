@@ -21,7 +21,10 @@ module.exports = {
   plugins: ['vue'],
   globals: {
     Go: true,
+    opensslDecrypt: true,
+    opensslEncrypt: true,
     process: true,
+    sha256sum: true,
   },
   // add your custom rules here
   rules: {

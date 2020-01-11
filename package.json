@@ -14,6 +14,8 @@
     "axios": "^0.18.1",
     "bootstrap-vue": "^2.2.0",
     "bootswatch": "^4.4.1",
+    "gibberish-aes": "^1.0.0",
+    "sha2": "^1.0.2",
     "uuid": "^3.3.3",
     "vue": "^2.6.11",
     "vue-clipboard2": "^0.2.1",

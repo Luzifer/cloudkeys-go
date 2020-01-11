@@ -35,9 +35,12 @@ Vue.component('fa-icon', FontAwesomeIcon)
 
 axios.defaults.baseURL = 'v2'
 
-const go = new Go()
-WebAssembly.instantiateStreaming(fetch('cryptocore.wasm'), go.importObject)
-  .then(async obj => await go.run(obj.instance))
+/*
+ * const go = new Go()
+ * WebAssembly.instantiateStreaming(fetch('cryptocore.wasm'), go.importObject)
+ *   .then(async obj => await go.run(obj.instance))
+ */
+import './js_cryptocore.js' // JS alternative
 
 window.instance = new Vue({
   mounted: () => store.dispatch('reload_users'),
