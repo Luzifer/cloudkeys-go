@@ -28,21 +28,21 @@ lint:
 		-v "$(CURDIR):/src" \
 		-w "/src" \
 		node:10-alpine \
-		sh -exc "apk add python && npm ci && npx eslint src"
+		sh -exc "apk add python && npm ci && npx eslint --ext .vue,.js src"
 
 lint-fix:
 	docker run --rm -i \
 		-v "$(CURDIR):/src" \
 		-w "/src" \
 		node:10-alpine \
-		sh -exc "apk add python && npm ci && npx eslint --fix src"
+		sh -exc "apk add python && npm ci && npx eslint --ext .vue,.js --fix src"
 
 lint-watch:
 	docker run --rm -i \
 		-v "$(CURDIR):/src" \
 		-w "/src" \
 		node:10-alpine \
-		sh -exc "apk add python && npm ci && while true; do npx eslint src || true; sleep 5; done"
+		sh -exc "apk add python && npm ci && while true; do npx eslint --ext .vue,.js src || true; sleep 5; done"
 
 .PHONY: bindata.go
 bindata.go: build_vue

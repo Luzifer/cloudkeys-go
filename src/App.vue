@@ -24,7 +24,6 @@ import RegisterModal from './components/RegisterModal.vue'
 import SignInModal from './components/SignInModal.vue'
 
 export default {
-  name: 'app',
   components: {
     AddPasswordModal,
     Landing,
@@ -32,7 +31,9 @@ export default {
     PasswordView,
     RegisterModal,
     SignInModal,
-  }
+  },
+
+  name: 'App',
 }
 </script>
 
